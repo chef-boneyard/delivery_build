@@ -1,0 +1,138 @@
+#!/opt/chef/embedded/bin/ruby
+
+require 'chef'
+require 'chef/config'
+require 'chef/rest'
+require 'chef/client'
+require 'base64'
+require 'uri'
+
+module Delivery
+  # Helper methods for our build node job runner workflow.
+  module JobHelpers
+
+    # All build nodes currently leverage a built-in internal user that
+    # all enterprises have; its name is "builder".
+    #
+    # This is my builder. There are many like it, but this is mine.
+    BUILDER_USER = "builder"
+
+    # Create appropriate authentication headers for a builder, given a
+    # job data hash. If no token is present in `job_data` (because the
+    # build nodes were updated before the server began handing tokens
+    # out), an empty set of headers is returned.
+    #
+    # @param job_data [Hash] Describes the job being run; we're
+    #   looking for a `token` key.
+    #
+    # @return [Hash] authentication headers, suitable for passing into
+    #   a `Chef::REST` call.
+    def self.builder_auth_headers(job_data)
+      if job_token = job_data["token"]
+        {"chef-delivery-token" => job_token,
+         "chef-delivery-user"  => BUILDER_USER}
+      else
+        {}
+      end
+    end
+
+  end # JobHelpers
+end # Delivery
+
+class Streamy
+  attr_accessor :output, :rest, :path, :builder_auth_headers
+
+  def initialize(rest, path, headers)
+    @rest = rest
+    @path = path
+    @builder_auth_headers = headers
+    @output = ""
+  end
+
+  def <<(arg)
+    @output << arg
+    rest.post(path,
+      {
+      "run_success" => false,
+      "run_log" => @output,
+      "run_status" => "running",
+      "run_complete" => false
+      },
+      builder_auth_headers
+    )
+  end
+
+  def to_str
+    @output
+  end
+end
+
+workspace_root = "<%= node['delivery_build']['root'] %>"
+workspace_bin = "<%= node['delivery_build']['bin'] %>"
+
+Chef::Config.from_file("/etc/chef/client.rb")
+client = Chef::Client.new
+client.run_ohai
+client.node_name
+
+change_file = File.join(workspace_root, 'change.json')
+raw_json = Base64.decode64(ARGV[0])
+File.open(change_file, 'w') do |file|
+  file.puts(raw_json)
+end
+
+job_data = Chef::JSONCompat.from_json(raw_json)
+
+builder_auth_headers = Delivery::JobHelpers.builder_auth_headers(job_data)
+
+rest = Chef::REST.new(job_data["delivery_api_url"])
+path = File.join(job_data['enterprise'],
+                 'orgs', job_data['organization'],
+                 'projects', job_data['project'],
+                 'pipelines', job_data['pipeline'],
+                 'phase_runs', job_data['phase_run_id'].to_s)
+
+streamy = Streamy.new(rest, path, builder_auth_headers)
+server = URI(job_data['delivery_api_url'])
+job_data['patchset_branch'] =~ /^_reviews\/#{job_data['pipeline']}\/(.+)\/#{job_data['patchset_number']}$/
+change = $1
+command_line = if job_data['stage'] == "verify"
+  "delivery job #{job_data['stage']} #{job_data['phase']} --server #{server.host} --user builder --ent #{job_data['enterprise']} --org #{job_data['organization']} --project #{job_data['project']} --for #{job_data['pipeline']} --patchset #{job_data['patchset_number']} --change-id #{job_data['change_id']} --change #{change} "
+else
+  "delivery job #{job_data['stage']} #{job_data['phase']} --server #{server.host} --user builder --ent #{job_data['enterprise']} --org #{job_data['organization']} --project #{job_data['project']} --for #{job_data['pipeline']} --change-id #{job_data['change_id']} --shasum #{job_data['sha']}"
+end
+
+cmd = Mixlib::ShellOut.new("#{command_line} --no-spinner", :environment => {
+'GIT_SSH' => File.join(workspace_bin, 'git_ssh'),
+'HOME' => workspace_root,
+'TERM' => 'screen-256color'
+})
+streamy << "Starting job on builder #{client.node_name}.\nCommand: #{command_line}\n"
+## This we will want to be configurable. but for now make it big and
+## and rely on pushy to timeout.
+cmd.timeout = 6600
+cmd.log_level = :error
+cmd.live_stream = streamy
+cmd.cwd = workspace_root
+cmd.run_command
+if cmd.error?
+  rest.post(path,
+    {
+      "run_success" => false,
+      "run_log" => streamy.output,
+      "run_status" => "failed",
+      "run_complete" => true
+    },
+    builder_auth_headers
+  )
+else
+  rest.post(path,
+    {
+      "run_success" => true,
+      "run_log" => streamy.output,
+      "run_status" => "finished",
+      "run_complete" => true
+    },
+    builder_auth_headers
+  )
+end
