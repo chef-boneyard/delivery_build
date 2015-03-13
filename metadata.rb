@@ -4,6 +4,6 @@ maintainer_email 'adam@chef.io'
 license          'apache2'
 description      'Sets up a delivery build node'
 long_description 'Sets up a delivery build node'
-version          '0.1.0'
+version          '0.1.1'
 
 depends 'git'
