@@ -1,3 +1,17 @@
+# The Push client
+case node['platform_family']
+when "rhel"
+  default['push_jobs']['package_url']      = "https://opscode-private-chef.s3.amazonaws.com/el/6/x86_64/opscode-push-jobs-client-1.1.5-1.el6.x86_64.rpm"
+  default['push_jobs']['package_checksum'] = "f5e6be32f60b689e999dcdceb102371a4ab21e5a1bb6fb69ff4b2243a7185d84"
+when "debian"
+  default['push_jobs']['package_url']      = "http://sales-at-getchef-dot-com.s3.amazonaws.com/opscode-push-jobs-client_1.0.1-1.ubuntu.12.04_amd64.deb"
+  default['push_jobs']['package_checksum'] = "72ad9b23e058391e8dd1eaa5ba2c8af1a6b8a6c5061c6d28ee2c427826283492"
+end
+
+default['push_jobs']['whitelist']        = {"chef-client" => "chef-client",
+                                            /^delivery-cmd (.+)$/ => '/var/opt/delivery/workspace/bin/delivery-cmd \'\1\''}
+
+
 # The version of Chef DK we want available on the builders
 default['delivery_build']['chefdk_version'] = '0.4.0'
 
@@ -35,7 +49,7 @@ default['delivery_build']['builder_keys'] = {
 }
 
 # The location of the Delivery API
-default['delivery_build']['api'] = "https://192.168.33.1"
+default['delivery_build']['api'] = nil
 
 # If set, we will build the delivery-cli from scratch
 default['delivery_build']['cli_dir'] = nil

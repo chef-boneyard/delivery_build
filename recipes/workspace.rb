@@ -21,7 +21,7 @@ end
 
 # The SSH Known Hosts File
 file node['delivery_build']['ssh_known_hosts_file'] do
-  owner 'root'
+  owner 'dbuild'
   mode '0644'
 end
 
@@ -87,9 +87,11 @@ execute "fetch_ssl_certificate" do
   not_if "knife ssl check -c #{delivery_config}"
 end
 
-# Fetch the SSL certificate for the Delivery Server
-execute "fetch_delivery_ssl_certificate" do
-  command "knife ssl fetch -c #{delivery_config} #{node['delivery_build']['api']}"
-  not_if "knife ssl check -c #{delivery_config} #{node['delivery_build']['api']}"
-  only_if { node['delivery_build']['api'] =~ /^https/ ? true : false }
+if node['delivery_build']['api']
+  # Fetch the SSL certificate for the Delivery Server
+  execute "fetch_delivery_ssl_certificate" do
+    command "knife ssl fetch -c #{delivery_config} #{node['delivery_build']['api']}"
+    not_if "knife ssl check -c #{delivery_config} #{node['delivery_build']['api']}"
+    only_if { node['delivery_build']['api'] =~ /^https/ ? true : false }
+  end
 end

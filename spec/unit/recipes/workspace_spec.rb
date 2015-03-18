@@ -129,7 +129,24 @@ describe 'delivery_build::workspace' do
       )
     end
 
-    it "fetches the ssl certificate of the delivery server" do
+    it "does not fetch the ssl certificate for the delivery api by default" do
+      expect(chef_run).to_not run_execute("fetch_delivery_ssl_certificate")
+    end
+
+  end
+
+  context "with node['delivery_build']['api'] set" do
+    before do
+      default_mocks
+    end
+
+    cached(:chef_run) do
+      runner = ChefSpec::SoloRunner.new
+      runner.node.normal['delivery_build']['api'] = "https://192.168.33.1"
+      runner.converge("delivery_build::workspace")
+    end
+
+    it "fetches the delivery chef server ssl key" do
       expect(chef_run).to run_execute("fetch_delivery_ssl_certificate").with(
         command: "knife ssl fetch -c /var/opt/delivery/workspace/etc/delivery.rb https://192.168.33.1"
       )

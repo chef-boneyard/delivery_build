@@ -20,4 +20,17 @@ if node['delivery_build']['cli_dir']
   link "/usr/bin/delivery" do
     to File.join(node['delivery_build']['cli_dir'], 'target', 'release', 'delivery')
   end
+else
+  packagecloud_repo "chef/stable" do
+    case node['platform_family']
+    when "debian"
+      type "deb"
+    when "rhel"
+      type "rpm"
+    end
+  end
+
+  package "delivery-cli" do
+    action :upgrade
+  end
 end
