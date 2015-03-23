@@ -120,6 +120,7 @@ else
 end
 
 cmd = Mixlib::ShellOut.new("#{command_line} --no-spinner", :environment => {
+'LC_ALL' => 'en_US.UTF-8',
 'GIT_SSH' => File.join(workspace_bin, 'git_ssh'),
 'HOME' => workspace_root,
 'TERM' => 'screen-256color'
