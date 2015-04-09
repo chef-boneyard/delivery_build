@@ -1,6 +1,21 @@
 current_dir = File.dirname(__FILE__)
-log_location             STDOUT
-node_name                "delivery"
-client_key               "#{current_dir}/delivery.pem"
-trusted_certs_dir        "/etc/chef/trusted_certs"
-chef_server_url          "<%= Chef::Config[:chef_server_url] %>"
+log_location      STDOUT
+node_name         "delivery"
+client_key        "#{current_dir}/delivery.pem"
+trusted_certs_dir "/etc/chef/trusted_certs"
+<%
+%W{
+  chef_server_url
+  https_proxy
+  https_proxy_pass
+  https_proxy_user
+  http_proxy
+  http_proxy_pass
+  http_proxy_user
+  no_proxy
+}.each do |config|
+  if Chef::Config[config.to_sym]
+%>
+<%= config %> "<%= Chef::Config[config.to_sym] %>"
+<% end
+end -%>

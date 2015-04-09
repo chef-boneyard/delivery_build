@@ -123,7 +123,10 @@ cmd = Mixlib::ShellOut.new("#{command_line} --no-spinner", :environment => {
 'LC_ALL' => 'en_US.UTF-8',
 'GIT_SSH' => File.join(workspace_bin, 'git_ssh'),
 'HOME' => workspace_root,
-'TERM' => 'screen-256color'
+'TERM' => 'screen-256color',
+'https_proxy' => Chef::Config['https_proxy'] || '',
+'http_proxy' => Chef::Config['http_proxy'] || '',
+'no_proxy' => Chef::Config['no_proxy'] || ''
 })
 streamy << "Starting job on builder #{client.node_name}.\nCommand: #{command_line}\n"
 ## This we will want to be configurable. but for now make it big and
