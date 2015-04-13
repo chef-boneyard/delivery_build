@@ -1,4 +1,5 @@
 directory File.expand_path(File.join(node['delivery_build']['root'], "..")) do
+  mode '0755'
   recursive true
   action :create
 end

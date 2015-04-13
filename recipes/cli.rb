@@ -21,13 +21,8 @@ if node['delivery_build']['cli_dir']
     to File.join(node['delivery_build']['cli_dir'], 'target', 'release', 'delivery')
   end
 else
-  packagecloud_repo "chef/stable" do
-    case node['platform_family']
-    when "debian"
-      type "deb"
-    when "rhel"
-      type "rpm"
-    end
+  packagecloud_repo 'chef/stable' do
+    type value_for_platform_family(debian: 'deb', rhel: 'rpm')
   end
 
   package "delivery-cli" do

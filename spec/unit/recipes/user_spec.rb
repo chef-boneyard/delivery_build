@@ -35,6 +35,7 @@ describe 'delivery_build::user' do
 
     it 'creates the home directory tree before create the dbuild user' do
       expect(chef_run).to create_directory('/var/opt/delivery').with(
+        mode: '0755',
         recursive: true
       )
     end
