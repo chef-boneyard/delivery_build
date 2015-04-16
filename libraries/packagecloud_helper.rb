@@ -36,7 +36,7 @@ module PackageCloud
         response = http.start { |h|  h.request(request) }
       end
 
-      raise response.inspect unless response == Net::HTTPSuccess
+      raise response.inspect unless response.is_a? Net::HTTPSuccess
       response
     end
 
