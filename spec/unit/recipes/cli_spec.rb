@@ -58,13 +58,14 @@ describe 'delivery_build::cli' do
 
     it 'install rust and cargo' do
       expect(chef_run).to run_execute('install rust and cargo').with(
-        command: "bash #{Chef::Config[:file_cache_path]}/rustup.sh"
+        command: "bash #{Chef::Config[:file_cache_path]}/rustup.sh --date=2015-04-01 --channel=nightly"
       )
     end
 
     it "creates a release build" do
       expect(chef_run).to run_execute('cargo build --release').with(
-        cwd: "/tmp/clime"
+        cwd: "/tmp/clime",
+        environment: {'LD_LIBRARY_PATH' => '/usr/local/lib'}
       )
     end
 
@@ -75,4 +76,3 @@ describe 'delivery_build::cli' do
     end
   end
 end
-
