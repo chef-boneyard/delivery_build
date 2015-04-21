@@ -54,3 +54,6 @@ default['delivery_build']['api'] = nil
 # If set, we will build the delivery-cli from scratch
 default['delivery_build']['cli_dir'] = nil
 
+# If set, download the package from the given url.
+default['delivery_build']['cli_url'] = nil
+default['delivery_build']['cli_checksum'] = nil
