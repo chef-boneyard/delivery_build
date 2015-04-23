@@ -11,9 +11,8 @@ end
 default['push_jobs']['whitelist']        = {"chef-client" => "chef-client",
                                             /^delivery-cmd (.+)$/ => '/var/opt/delivery/workspace/bin/delivery-cmd \'\1\''}
 
-
-# The version of Chef DK we want available on the builders
-default['delivery_build']['chefdk_version'] = '0.4.0'
+# The repo that we should pull chefdk and delivery-cli
+default['delivery_build']['repo_name'] = 'chef/stable'
 
 # Directories we need for the builder workspace
 default['delivery_build']['root'] = '/var/opt/delivery/workspace'

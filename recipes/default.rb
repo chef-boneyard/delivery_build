@@ -19,6 +19,9 @@
 # Install git
 include_recipe 'git'
 
+# Setup the Package Cloud Repo
+include_recipe 'delivery_build::repo'
+
 # Install the Chef DK
 include_recipe 'delivery_build::chefdk'
 

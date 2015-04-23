@@ -35,17 +35,8 @@ describe 'delivery_build::chefdk' do
       chef_run
     end
 
-    it 'downloads install.sh' do
-      expect(chef_run).to create_remote_file("#{Chef::Config[:file_cache_path]}/install.sh").with(
-        source: 'https://www.chef.io/chef/install.sh',
-        mode: '0755'
-      )
-    end
-
     it 'installs chefdk' do
-      expect(chef_run).to run_execute('install_chefdk').with(
-        command: "#{Chef::Config[:file_cache_path]}/install.sh -P chefdk -v 0.4.0"
-      )
+      expect(chef_run).to upgrade_package('chefdk')
     end
 
     it 'configures .gemrc' do

@@ -1,14 +1,5 @@
-chefdk_version = node['delivery_build']['chefdk_version']
-
-remote_file "#{Chef::Config[:file_cache_path]}/install.sh" do
-  source "https://www.chef.io/chef/install.sh"
-  mode "0755"
-  action :create
-end
-
-execute "install_chefdk" do
-  command "#{Chef::Config[:file_cache_path]}/install.sh -P chefdk -v #{chefdk_version}"
-  not_if "chef --version | grep #{chefdk_version}"
+package 'chefdk' do
+  action :upgrade
 end
 
 # For now, we need to add a gemrc file to get Chef to install gems

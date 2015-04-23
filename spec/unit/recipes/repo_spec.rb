@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: delivery_build
-# Spec:: default
+# Spec:: repo
 #
 # Copyright 2015 Chef Software, Inc.
 #
@@ -18,30 +18,25 @@
 
 require 'spec_helper'
 
-describe 'delivery_build::default' do
+describe 'delivery_build::chefdk' do
   context "by default" do
     before do
       default_mocks
     end
 
     cached(:chef_run) do
-      runner = ChefSpec::SoloRunner.new
-      runner.converge('delivery_build::default')
+      runner = ChefSpec::SoloRunner.new do |node|
+      end
+      runner.converge('delivery_build::repo')
     end
 
     it 'converges successfully' do
       chef_run
     end
 
-    ['git',
-     'delivery_build::repo',
-     'delivery_build::chefdk',
-     'delivery_build::user',
-     'delivery_build::workspace',
-     'delivery_build::cli' ].each do |r|
-      it "includes #{r}" do
-        expect(chef_run).to include_recipe(r)
-      end
+    it 'sets up the chef/stable package cloud repo' do
+      expect(chef_run).to create_packagecloud_repo('chef/stable')
     end
   end
 end
+
