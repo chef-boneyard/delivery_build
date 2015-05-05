@@ -44,6 +44,10 @@ elsif node['delivery_build']['delivery-cli']['artifact']
     provider Chef::Provider::Package::Dpkg if node["platform_family"].eql?('debian')
   end
 else
+  packagecloud_repo 'chef/stable' do
+    type value_for_platform_family(debian: 'deb', rhel: 'rpm')
+  end
+
   package "delivery-cli" do
     action :upgrade
   end
