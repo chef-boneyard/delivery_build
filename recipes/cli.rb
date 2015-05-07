@@ -9,8 +9,9 @@ if node['delivery_build']['cli_dir']
 
   # Note - you'll want to switch this to a stable rust in March,
   # or move it forward in the interim.
+  # Run rustup.sh with "--yes" which puts it in non-interactive mode.
   execute "install rust and cargo" do
-    command "bash #{Chef::Config[:file_cache_path]}/rustup.sh --date=2015-04-01 --channel=nightly"
+    command "bash #{Chef::Config[:file_cache_path]}/rustup.sh --yes --date=2015-04-01 --channel=nightly"
   end
 
   execute "cargo build --release" do
