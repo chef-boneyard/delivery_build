@@ -58,7 +58,7 @@ describe 'delivery_build::cli' do
 
     it 'install rust and cargo' do
       expect(chef_run).to run_execute('install rust and cargo').with(
-        command: "bash #{Chef::Config[:file_cache_path]}/rustup.sh --yes --date=2015-04-01 --channel=nightly"
+        command: "bash #{Chef::Config[:file_cache_path]}/rustup.sh --yes --date=2015-04-29 --channel=nightly"
       )
     end
 
