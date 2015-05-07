@@ -11,7 +11,7 @@ if node['delivery_build']['cli_dir']
   # or move it forward in the interim.
   # Run rustup.sh with "--yes" which puts it in non-interactive mode.
   execute "install rust and cargo" do
-    command "bash #{Chef::Config[:file_cache_path]}/rustup.sh --yes --date=2015-04-01 --channel=nightly"
+    command "bash #{Chef::Config[:file_cache_path]}/rustup.sh --yes --date=2015-04-29 --channel=nightly"
   end
 
   execute "cargo build --release" do
