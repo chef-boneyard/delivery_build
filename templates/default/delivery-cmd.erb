@@ -129,9 +129,9 @@ cli_env = {
   'HOME' => workspace_root,
   'TERM' => 'screen-256color'
 }
-cli_env['https_proxy'] = https_proxy if https_proxy
-cli_env['http_proxy'] = http_proxy if http_proxy
-cli_env['no_proxy'] = no_proxy if no_proxy
+cli_env['https_proxy'] = https_proxy if https_proxy && !https_proxy.strip.empty?
+cli_env['http_proxy'] = http_proxy if http_proxy && !http_proxy.strip.empty?
+cli_env['no_proxy'] = no_proxy if no_proxy && !no_proxy.strip.empty?
 
 cmd = Mixlib::ShellOut.new("#{command_line} --no-spinner", :environment => cli_env)
 streamy << "Starting job on builder #{client.node_name}.\nCommand: #{command_line}\n"
