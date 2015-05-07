@@ -119,15 +119,21 @@ else
   "delivery job #{job_data['stage']} #{job_data['phase']} --server #{server.host} --user builder --ent #{job_data['enterprise']} --org #{job_data['organization']} --project #{job_data['project']} --for #{job_data['pipeline']} --change-id #{job_data['change_id']} --shasum #{job_data['sha']}"
 end
 
-cmd = Mixlib::ShellOut.new("#{command_line} --no-spinner", :environment => {
-'LC_ALL' => 'en_US.UTF-8',
-'GIT_SSH' => File.join(workspace_bin, 'git_ssh'),
-'HOME' => workspace_root,
-'TERM' => 'screen-256color',
-'https_proxy' => Chef::Config['https_proxy'] || '',
-'http_proxy' => Chef::Config['http_proxy'] || '',
-'no_proxy' => Chef::Config['no_proxy'] || ''
-})
+https_proxy = Chef::Config[:https_proxy] || ENV['HTTPS_PROXY'] || ENV['https_proxy']
+http_proxy = Chef::Config[:http_proxy] || ENV['HTTP_PROXY'] || ENV['http_proxy']
+no_proxy = Chef::Config[:no_proxy] || ENV['NO_PROXY'] || ENV['no_proxy']
+cli_env = {
+  'PATH' => "/opt/chefdk/bin:/opt/chefdk/embedded/bin:#{ENV['PATH']}",
+  'LC_ALL' => 'en_US.UTF-8',
+  'GIT_SSH' => File.join(workspace_bin, 'git_ssh'),
+  'HOME' => workspace_root,
+  'TERM' => 'screen-256color'
+}
+cli_env['https_proxy'] = https_proxy if https_proxy
+cli_env['http_proxy'] = http_proxy if http_proxy
+cli_env['no_proxy'] = no_proxy if no_proxy
+
+cmd = Mixlib::ShellOut.new("#{command_line} --no-spinner", :environment => cli_env)
 streamy << "Starting job on builder #{client.node_name}.\nCommand: #{command_line}\n"
 ## This we will want to be configurable. but for now make it big and
 ## and rely on pushy to timeout.
