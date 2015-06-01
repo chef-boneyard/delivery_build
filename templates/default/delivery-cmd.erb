@@ -6,6 +6,7 @@ require 'chef/rest'
 require 'chef/client'
 require 'base64'
 require 'uri'
+require 'date'
 
 module Delivery
   # Helper methods for our build node job runner workflow.
@@ -134,7 +135,10 @@ cli_env['http_proxy'] = http_proxy if http_proxy && !http_proxy.strip.empty?
 cli_env['no_proxy'] = no_proxy if no_proxy && !no_proxy.strip.empty?
 
 cmd = Mixlib::ShellOut.new("#{command_line} --no-spinner", :environment => cli_env)
-streamy << "Starting job on builder #{client.node_name}.\nCommand: #{command_line}\n"
+
+start_datetime = DateTime.now
+
+streamy << "Starting job on builder #{client.node_name} at #{start_datetime.iso8601}.\nCommand: #{command_line}\n"
 ## This we will want to be configurable. but for now make it big and
 ## and rely on pushy to timeout.
 cmd.timeout = 6600
@@ -142,6 +146,12 @@ cmd.log_level = :error
 cmd.live_stream = streamy
 cmd.cwd = workspace_root
 cmd.run_command
+
+end_datetime = DateTime.now
+# difference between 2 DateTimes is expressed in days
+elapsed_time = ((end_datetime - start_datetime) * 24 * 60 * 60).to_i
+streamy << "\nJob ended at #{end_datetime.iso8601} (ran in #{elapsed_time} seconds)"
+
 if cmd.error?
   rest.post(path,
     {
