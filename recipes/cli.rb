@@ -1,26 +1,25 @@
 # If you set a directory, we will compile the CLI from there, and link
 # to it. Probably only useful in development, or in very dire situations.
-if node['delivery_build']['cli_dir']
+
+# node['delivery_build']['cli_dir'] is deprecated, please use node['delivery_build']['delivery-cli']['source_dir'] instead
+source_dir = node['delivery_build']['delivery-cli']['source_dir'] || node['delivery_build']['cli_dir']
+if source_dir
   package "curl"
+  include_recipe 'build-essential'
 
-  remote_file "#{Chef::Config[:file_cache_path]}/rustup.sh" do
-    source "https://static.rust-lang.org/rustup.sh"
-  end
-
-  # Note - you'll want to switch this to a stable rust in March,
-  # or move it forward in the interim.
-  # Run rustup.sh with "--yes" which puts it in non-interactive mode.
+  # Run rustup.sh via the rustup make target in the delivery-cli repo
   execute "install rust and cargo" do
-    command "bash #{Chef::Config[:file_cache_path]}/rustup.sh --yes --date=2015-04-29 --channel=nightly"
+    cwd source_dir
+    command "make rustup_builder"
   end
 
   execute "cargo build --release" do
-    cwd node['delivery_build']['cli_dir']
+    cwd source_dir
     environment('LD_LIBRARY_PATH' => '/usr/local/lib')
   end
 
   link "/usr/bin/delivery" do
-    to File.join(node['delivery_build']['cli_dir'], 'target', 'release', 'delivery')
+    to File.join(source_dir, 'target', 'release', 'delivery')
   end
 # Support passing in the url to the cli package.
 elsif node['delivery_build']['delivery-cli']['artifact']
