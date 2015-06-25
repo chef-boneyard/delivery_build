@@ -50,15 +50,10 @@ describe 'delivery_build::cli' do
       expect(chef_run).to install_package('curl')
     end
 
-    it 'downloads rustup.sh' do
-      expect(chef_run).to create_remote_file("#{Chef::Config[:file_cache_path]}/rustup.sh").with(
-        source: "https://static.rust-lang.org/rustup.sh"
-      )
-    end
-
-    it 'install rust and cargo' do
+    it 'installs rust and cargo' do
       expect(chef_run).to run_execute('install rust and cargo').with(
-        command: "bash #{Chef::Config[:file_cache_path]}/rustup.sh --yes --date=2015-04-29 --channel=nightly"
+        cwd: "/tmp/clime",
+        command: "make rustup_builder"
       )
     end
 
