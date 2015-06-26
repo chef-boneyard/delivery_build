@@ -8,3 +8,4 @@ version          '0.2.6'
 
 depends 'git'
 depends 'packagecloud'
+depends 'build-essential'
