@@ -112,10 +112,9 @@ path = File.join(job_data['enterprise'],
 
 streamy = Streamy.new(rest, path, builder_auth_headers)
 server = URI(job_data['delivery_api_url'])
-job_data['patchset_branch'] =~ /^_reviews\/#{job_data['pipeline']}\/(.+)\/#{job_data['patchset_number']}$/
-change = $1
+
 command_line = if job_data['stage'] == "verify"
-  "delivery job #{job_data['stage']} #{job_data['phase']} --server #{server.host} --user builder --ent #{job_data['enterprise']} --org #{job_data['organization']} --project #{job_data['project']} --for #{job_data['pipeline']} --patchset #{job_data['patchset_number']} --change-id #{job_data['change_id']} --change #{change} --git-url #{job_data['git_url']}"
+  "delivery job #{job_data['stage']} #{job_data['phase']} --server #{server.host} --user builder --ent #{job_data['enterprise']} --org #{job_data['organization']} --project #{job_data['project']} --for #{job_data['pipeline']} --change-id #{job_data['change_id']} --branch #{job_data['patchset_branch']} --git-url #{job_data['git_url']}"
 else
   "delivery job #{job_data['stage']} #{job_data['phase']} --server #{server.host} --user builder --ent #{job_data['enterprise']} --org #{job_data['organization']} --project #{job_data['project']} --for #{job_data['pipeline']} --change-id #{job_data['change_id']} --shasum #{job_data['sha']} --git-url #{job_data['git_url']}"
 end
