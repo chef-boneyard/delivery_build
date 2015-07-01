@@ -13,6 +13,8 @@ trusted_certs_dir "/etc/chef/trusted_certs"
   http_proxy_pass
   http_proxy_user
   no_proxy
+  ssl_verify_mode
+  verify_api_cert
 }.each do |config|
   if Chef::Config[config.to_sym]
 %>
