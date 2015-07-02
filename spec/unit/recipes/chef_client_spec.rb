@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: delivery_build
-# Spec:: default
+# Spec:: chef_client
 #
 # Copyright 2015 Chef Software, Inc.
 #
@@ -18,7 +18,7 @@
 
 require 'spec_helper'
 
-describe 'delivery_build::default' do
+describe 'delivery_build::chef_client' do
   context "by default" do
     before do
       default_mocks
@@ -26,23 +26,23 @@ describe 'delivery_build::default' do
 
     cached(:chef_run) do
       runner = ChefSpec::SoloRunner.new
-      runner.converge('delivery_build::default')
+      runner.converge('delivery_build::chef_client')
     end
 
     it 'converges successfully' do
       chef_run
     end
 
-    ['git',
-     'delivery_build::chef_client',
-     'delivery_build::repo',
-     'delivery_build::chefdk',
-     'delivery_build::user',
-     'delivery_build::workspace',
-     'delivery_build::cli' ].each do |r|
-      it "includes #{r}" do
-        expect(chef_run).to include_recipe(r)
-      end
+    it 'sets cleint.rb perms to 644' do
+      expect(chef_run).to create_file('/etc/chef/client.rb').with(
+        mode: 0644
+      )
+    end
+
+    it 'sets trusted_certs perms to 644' do
+      expect(chef_run).to create_directory('/etc/chef/trusted_certs').with(
+        mode: 0644
+      )
     end
   end
 end

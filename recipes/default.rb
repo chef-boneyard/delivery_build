@@ -16,6 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Make sure client.rb is readable by dbuild
+include_recipe 'delivery_build::chef_client'
+
 # Install git
 include_recipe 'git'
 

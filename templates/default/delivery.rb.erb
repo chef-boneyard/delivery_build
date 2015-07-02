@@ -1,4 +1,6 @@
+require 'chef/config'
 current_dir = File.dirname(__FILE__)
+Chef::Config.from_file("/etc/chef/client.rb")
 <%
   config_hash = {
     :log_location => 'STDOUT',
