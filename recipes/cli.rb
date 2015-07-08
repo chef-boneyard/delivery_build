@@ -4,16 +4,14 @@
 # node['delivery_build']['cli_dir'] is deprecated, please use node['delivery_build']['delivery-cli']['source_dir'] instead
 source_dir = node['delivery_build']['delivery-cli']['source_dir'] || node['delivery_build']['cli_dir']
 if source_dir
-  package "curl"
-  include_recipe 'build-essential'
 
   # Run rustup.sh via the rustup make target in the delivery-cli repo
-  execute "install rust and cargo" do
-    cwd source_dir
-    command "make rustup_builder"
+  execute "prepare node for delivery-cli building" do
+    cwd "#{source_dir}/cookbooks/delivery_rust"
+    command "berks vendor cookbooks && chef-client -z -o delivery_rust::default"
   end
 
-  execute "cargo build --release" do
+  execute "make build" do
     cwd source_dir
     environment('LD_LIBRARY_PATH' => '/usr/local/lib')
   end
