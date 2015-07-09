@@ -46,22 +46,12 @@ describe 'delivery_build::cli' do
       chef_run
     end
 
-    it 'installs curl' do
-      expect(chef_run).to install_package('curl')
-    end
-
     it 'installs rust and cargo' do
-      expect(chef_run).to run_execute('install rust and cargo').with(
-        cwd: "/tmp/clime",
-        command: "make rustup_builder"
-      )
+      expect(chef_run).to run_execute('prepare node for delivery-cli building')
     end
 
     it "creates a release build" do
-      expect(chef_run).to run_execute('cargo build --release').with(
-        cwd: "/tmp/clime",
-        environment: {'LD_LIBRARY_PATH' => '/usr/local/lib'}
-      )
+      expect(chef_run).to run_execute('make build')
     end
 
     it "links itself to /usr/bin/delivery" do
