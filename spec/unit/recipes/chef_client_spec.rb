@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: delivery_build
-# Spec:: chef_client
+# Spec:: chef_client_spec
 #
 # Copyright 2015 Chef Software, Inc.
 #
@@ -41,7 +41,7 @@ describe 'delivery_build::chef_client' do
 
     it 'sets trusted_certs perms to 644' do
       expect(chef_run).to create_directory('/etc/chef/trusted_certs').with(
-        mode: 0644
+        mode: 0755
       )
     end
   end
