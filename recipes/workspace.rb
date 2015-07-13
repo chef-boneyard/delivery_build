@@ -81,17 +81,21 @@ template knife_config do
   mode '0644'
 end
 
-# Fetch the SSL certificate for the CS if necessary
-execute "fetch_ssl_certificate" do
-  command "knife ssl fetch -c #{delivery_config}"
-  not_if "knife ssl check -c #{delivery_config}"
-end
+# Fetch the SSL certificate for the CS if necessary. For example, it's
+# primarily not necessary when running in local mode (e.g.,
+# test-kitchen w/ the chef_zero provisioner).
+unless Chef::Config[:local_mode]
+  execute "fetch_ssl_certificate" do
+    command "knife ssl fetch -c #{delivery_config}"
+    not_if "knife ssl check -c #{delivery_config}"
+  end
 
-if node['delivery_build']['api']
-  # Fetch the SSL certificate for the Delivery Server
-  execute "fetch_delivery_ssl_certificate" do
-    command "knife ssl fetch -c #{delivery_config} #{node['delivery_build']['api']}"
-    not_if "knife ssl check -c #{delivery_config} #{node['delivery_build']['api']}"
-    only_if { node['delivery_build']['api'] =~ /^https/ ? true : false }
+  if node['delivery_build']['api']
+    # Fetch the SSL certificate for the Delivery Server
+    execute "fetch_delivery_ssl_certificate" do
+      command "knife ssl fetch -c #{delivery_config} #{node['delivery_build']['api']}"
+      not_if "knife ssl check -c #{delivery_config} #{node['delivery_build']['api']}"
+      only_if { node['delivery_build']['api'] =~ /^https/ ? true : false }
+    end
   end
 end
