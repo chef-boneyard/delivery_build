@@ -33,7 +33,13 @@ describe 'delivery_build::chef_client' do
       chef_run
     end
 
-    it 'sets cleint.rb perms to 644' do
+    it 'sets /etc/chef perms to 755' do
+      expect(chef_run).to create_directory('/etc/chef').with(
+        mode: 0755
+      )
+    end
+
+    it 'sets client.rb perms to 644' do
       expect(chef_run).to create_file('/etc/chef/client.rb').with(
         mode: 0644
       )
