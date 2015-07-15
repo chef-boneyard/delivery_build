@@ -19,7 +19,7 @@
 require 'spec_helper'
 
 describe 'delivery_build::cli' do
-  context "by default" do
+  context 'by default' do
     before do
       default_mocks
     end
@@ -37,7 +37,7 @@ describe 'delivery_build::cli' do
   context "with a node['delivery_build']['cli_dir'] set" do
     cached(:chef_run) do
       runner = ChefSpec::SoloRunner.new do |node|
-        node.set['delivery_build']['cli_dir'] = "/tmp/clime"
+        node.set['delivery_build']['cli_dir'] = '/tmp/clime'
       end
       runner.converge('delivery_build::cli')
     end
@@ -50,12 +50,12 @@ describe 'delivery_build::cli' do
       expect(chef_run).to run_execute('prepare node for delivery-cli building')
     end
 
-    it "creates a release build" do
+    it 'creates a release build' do
       expect(chef_run).to run_execute('make build')
     end
 
-    it "links itself to /usr/bin/delivery" do
-      expect(chef_run).to create_link("/usr/bin/delivery").with(
+    it 'links itself to /usr/bin/delivery' do
+      expect(chef_run).to create_link('/usr/bin/delivery').with(
         to: '/tmp/clime/target/release/delivery'
       )
     end

@@ -19,14 +19,14 @@
 require 'spec_helper'
 
 describe 'delivery_build::workspace' do
-  context "by default" do
+  context 'by default' do
     before do
       default_mocks
     end
 
     cached(:chef_run) do
       runner = ChefSpec::SoloRunner.new
-      runner.converge("delivery_build::workspace")
+      runner.converge('delivery_build::workspace')
     end
 
     it 'converges successfully' do
@@ -48,26 +48,26 @@ describe 'delivery_build::workspace' do
       end
     end
 
-    it "writes the ssh wrapper" do
+    it 'writes the ssh wrapper' do
       filename = '/var/opt/delivery/workspace/bin/git_ssh'
       expect(chef_run).to create_template(filename).with(
         owner: 'root',
-        mode: '0755',
+        mode: '0755'
       )
       [
-       Regexp.new("-o UserKnownHostsFile=/var/opt/delivery/workspace/etc/delivery-git-ssh-known-hosts"),
-       Regexp.new("-o IdentityFile=/var/opt/delivery/workspace/etc/builder_key"),
-       Regexp.new("-l builder")
+        Regexp.new('-o UserKnownHostsFile=/var/opt/delivery/workspace/etc/delivery-git-ssh-known-hosts'),
+        Regexp.new('-o IdentityFile=/var/opt/delivery/workspace/etc/builder_key'),
+        Regexp.new('-l builder')
       ].each do |check|
         expect(chef_run).to render_file(filename).with_content(check)
       end
     end
 
-    it "creates the known hosts file" do
+    it 'creates the known hosts file' do
       expect(chef_run).to create_file('/var/opt/delivery/workspace/etc/delivery-git-ssh-known-hosts')
     end
 
-    it "creates the delivery-cmd" do
+    it 'creates the delivery-cmd' do
       filename = '/var/opt/delivery/workspace/bin/delivery-cmd'
       expect(chef_run).to create_template(filename).with(
         owner: 'root',
@@ -78,9 +78,9 @@ describe 'delivery_build::workspace' do
       )
     end
 
-    it "creates the builder ssh key" do
-      ["/var/opt/delivery/workspace/etc/builder_key",
-       "/var/opt/delivery/workspace/.chef/builder_key"
+    it 'creates the builder ssh key' do
+      ['/var/opt/delivery/workspace/etc/builder_key',
+       '/var/opt/delivery/workspace/.chef/builder_key'
       ].each do |filename|
         expect(chef_run).to create_file(filename).with(
           owner: 'dbuild',
@@ -93,9 +93,9 @@ describe 'delivery_build::workspace' do
       end
     end
 
-    it "creates the delivery.pem for the chef server" do
-      ["/var/opt/delivery/workspace/etc/delivery.pem",
-       "/var/opt/delivery/workspace/.chef/delivery.pem"
+    it 'creates the delivery.pem for the chef server' do
+      ['/var/opt/delivery/workspace/etc/delivery.pem',
+       '/var/opt/delivery/workspace/.chef/delivery.pem'
       ].each do |filename|
         expect(chef_run).to create_file(filename).with(
           owner: 'dbuild',
@@ -108,8 +108,8 @@ describe 'delivery_build::workspace' do
       end
     end
 
-    it "creates the knife.rb" do
-      filename = "/var/opt/delivery/workspace/.chef/knife.rb"
+    it 'creates the knife.rb' do
+      filename = '/var/opt/delivery/workspace/.chef/knife.rb'
       expect(chef_run).to create_template(filename).with(
         owner: 'dbuild',
         mode: '0644'
@@ -123,16 +123,15 @@ describe 'delivery_build::workspace' do
       end
     end
 
-    it "fetches the delivery chef server ssl key" do
-      expect(chef_run).to run_execute("fetch_ssl_certificate").with(
-        command: "knife ssl fetch -c /var/opt/delivery/workspace/etc/delivery.rb"
+    it 'fetches the delivery chef server ssl key' do
+      expect(chef_run).to run_execute('fetch_ssl_certificate').with(
+        command: 'knife ssl fetch -c /var/opt/delivery/workspace/etc/delivery.rb'
       )
     end
 
-    it "does not fetch the ssl certificate for the delivery api by default" do
-      expect(chef_run).to_not run_execute("fetch_delivery_ssl_certificate")
+    it 'does not fetch the ssl certificate for the delivery api by default' do
+      expect(chef_run).to_not run_execute('fetch_delivery_ssl_certificate')
     end
-
   end
 
   context "with node['delivery_build']['api'] set" do
@@ -142,13 +141,13 @@ describe 'delivery_build::workspace' do
 
     cached(:chef_run) do
       runner = ChefSpec::SoloRunner.new
-      runner.node.normal['delivery_build']['api'] = "https://192.168.33.1"
-      runner.converge("delivery_build::workspace")
+      runner.node.normal['delivery_build']['api'] = 'https://192.168.33.1'
+      runner.converge('delivery_build::workspace')
     end
 
-    it "fetches the delivery chef server ssl key" do
-      expect(chef_run).to run_execute("fetch_delivery_ssl_certificate").with(
-        command: "knife ssl fetch -c /var/opt/delivery/workspace/etc/delivery.rb https://192.168.33.1"
+    it 'fetches the delivery chef server ssl key' do
+      expect(chef_run).to run_execute('fetch_delivery_ssl_certificate').with(
+        command: 'knife ssl fetch -c /var/opt/delivery/workspace/etc/delivery.rb https://192.168.33.1'
       )
     end
   end

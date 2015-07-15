@@ -1,13 +1,22 @@
-[
-  'root',
-  'bin',
-  'lib',
-  'etc',
-  'dot_chef'
-].each do |dir|
+#
+# Copyright 2015 Chef Software, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+%w(root bin lib etc dot_chef).each do |dir|
   directory node['delivery_build'][dir] do
-    owner "root"
-    mode "0755"
+    owner 'root'
+    mode '0755'
     recursive true
   end
 end
@@ -36,11 +45,11 @@ end
 # this is inside the 'if change' block mainly
 # because otherwise that would fail on the very-first
 # TK-driven run in the dev setup
-{'builder_key'  => 'builder_key',
- 'delivery_pem' => 'delivery.pem'}.each do |key_name, file_name|
+{ 'builder_key'  => 'builder_key',
+  'delivery_pem' => 'delivery.pem' }.each do |key_name, file_name|
   data_bag_coords = node['delivery_build']['builder_keys'][key_name]
   data_bag_content = DeliveryHelper.encrypted_data_bag_item(data_bag_coords['bag'],
-                                             data_bag_coords['item'])
+                                                            data_bag_coords['item'])
   # TODO: the 'builder_key' should clearly be dependent on the enterprise
   # and so stored at an ent-level workspace dir
   file ::File.join(node['delivery_build']['etc'], file_name) do
@@ -67,7 +76,7 @@ end
 # the knife file to talk to CS as delivery
 delivery_config = ::File.join(node['delivery_build']['etc'], 'delivery.rb')
 template delivery_config do
-  source "delivery.rb.erb"
+  source 'delivery.rb.erb'
   owner node['delivery_build']['build_user']
   group 'root'
   mode '0644'
@@ -76,7 +85,7 @@ end
 # This is used by the delivery CLI-based build node workflow
 knife_config = ::File.join(node['delivery_build']['dot_chef'], 'knife.rb')
 template knife_config do
-  source "delivery.rb.erb"
+  source 'delivery.rb.erb'
   owner node['delivery_build']['build_user']
   mode '0644'
 end
@@ -85,14 +94,14 @@ end
 # primarily not necessary when running in local mode (e.g.,
 # test-kitchen w/ the chef_zero provisioner).
 unless Chef::Config[:local_mode]
-  execute "fetch_ssl_certificate" do
+  execute 'fetch_ssl_certificate' do
     command "knife ssl fetch -c #{delivery_config}"
     not_if "knife ssl check -c #{delivery_config}"
   end
 
   if node['delivery_build']['api']
     # Fetch the SSL certificate for the Delivery Server
-    execute "fetch_delivery_ssl_certificate" do
+    execute 'fetch_delivery_ssl_certificate' do
       command "knife ssl fetch -c #{delivery_config} #{node['delivery_build']['api']}"
       not_if "knife ssl check -c #{delivery_config} #{node['delivery_build']['api']}"
       only_if { node['delivery_build']['api'] =~ /^https/ ? true : false }

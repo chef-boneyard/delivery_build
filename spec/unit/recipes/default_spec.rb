@@ -19,7 +19,7 @@
 require 'spec_helper'
 
 describe 'delivery_build::default' do
-  context "by default" do
+  context 'by default' do
     before do
       default_mocks
     end
@@ -39,7 +39,7 @@ describe 'delivery_build::default' do
      'delivery_build::chefdk',
      'delivery_build::user',
      'delivery_build::workspace',
-     'delivery_build::cli' ].each do |r|
+     'delivery_build::cli'].each do |r|
       it "includes #{r}" do
         expect(chef_run).to include_recipe(r)
       end

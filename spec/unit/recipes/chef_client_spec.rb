@@ -19,7 +19,7 @@
 require 'spec_helper'
 
 describe 'delivery_build::chef_client' do
-  context "by default" do
+  context 'by default' do
     before do
       default_mocks
     end

@@ -19,7 +19,7 @@
 require 'spec_helper'
 
 describe 'delivery_build::user' do
-  context "by default" do
+  context 'by default' do
     before do
       default_mocks
     end
@@ -40,7 +40,7 @@ describe 'delivery_build::user' do
       )
     end
 
-    it "adds the build user" do
+    it 'adds the build user' do
       expect(chef_run).to create_user('dbuild').with(
         home: '/var/opt/delivery/workspace',
         comment: 'Delivery Build'
@@ -48,5 +48,3 @@ describe 'delivery_build::user' do
     end
   end
 end
-
-
