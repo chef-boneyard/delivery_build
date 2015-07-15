@@ -4,8 +4,19 @@
     "name": "build-cookbook",
     "path": ".delivery/build-cookbook"
   },
-  "skip_phases": [],
+  "delivery-truck": {
+    "publish": {
+      "github": "chef-cookbooks/delivery_build"
+    }
+  },
+  "skip_phases": [
+    "deploy",
+    "provision",
+    "quality",
+    "security",
+    "smoke"
+  ],
   "build_nodes": {
-        "default"    : ["name:builder*.shd.chef.co"]
-        }
+    "default"    : ["name:builder*.shd.chef.co"]
+  }
 }
