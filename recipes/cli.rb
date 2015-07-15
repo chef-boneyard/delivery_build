@@ -6,17 +6,17 @@ source_dir = node['delivery_build']['delivery-cli']['source_dir'] || node['deliv
 if source_dir
 
   # Run rustup.sh via the rustup make target in the delivery-cli repo
-  execute "prepare node for delivery-cli building" do
+  execute 'prepare node for delivery-cli building' do
     cwd "#{source_dir}/cookbooks/delivery_rust"
-    command "berks vendor cookbooks && chef-client -z -o delivery_rust::default"
+    command 'berks vendor cookbooks && chef-client -z -o delivery_rust::default'
   end
 
-  execute "make build" do
+  execute 'make build' do
     cwd source_dir
     environment('LD_LIBRARY_PATH' => '/usr/local/lib')
   end
 
-  link "/usr/bin/delivery" do
+  link '/usr/bin/delivery' do
     to File.join(source_dir, 'target', 'release', 'delivery')
   end
 # Support passing in the url to the cli package.
@@ -31,18 +31,18 @@ elsif node['delivery_build']['delivery-cli']['artifact']
   remote_file pkg_path do
     checksum node['delivery_build']['delivery-cli']['checksum'] if node['delivery_build']['delivery-cli']['checksum']
     source node['delivery_build']['delivery-cli']['artifact']
-    owner "root"
-    group "root"
-    mode "0644"
+    owner 'root'
+    group 'root'
+    mode '0644'
   end
 
-  package "delivery-cli" do
+  package 'delivery-cli' do
     source pkg_path
     version node['delivery_build']['delivery-cli']['version']
-    provider Chef::Provider::Package::Dpkg if node["platform_family"].eql?('debian')
+    provider Chef::Provider::Package::Dpkg if node['platform_family'].eql?('debian')
   end
 else
-  package "delivery-cli" do
+  package 'delivery-cli' do
     action :upgrade
   end
 end

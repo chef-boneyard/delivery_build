@@ -19,14 +19,14 @@
 require 'spec_helper'
 
 describe 'delivery_build::chefdk' do
-  context "by default" do
+  context 'by default' do
     before do
       default_mocks
     end
 
     cached(:chef_run) do
       runner = ChefSpec::SoloRunner.new do |node|
-        node.set['delivery_build']['chefdk_version'] = "0.4.0"
+        node.set['delivery_build']['chefdk_version'] = '0.4.0'
       end
       runner.converge('delivery_build::chefdk')
     end
@@ -47,4 +47,3 @@ describe 'delivery_build::chefdk' do
     end
   end
 end
-

@@ -16,15 +16,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-directory "/etc/chef" do
+directory '/etc/chef' do
   mode 0755
 end
 
-file "/etc/chef/client.rb" do
+file '/etc/chef/client.rb' do
   mode 0644
 end
 
-directory "/etc/chef/trusted_certs" do
+directory '/etc/chef/trusted_certs' do
   mode 0755
 end
 

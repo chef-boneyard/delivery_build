@@ -1,3 +1,19 @@
+#
+# Copyright 2015 Chef Software, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
 package 'chefdk' do
   action :upgrade
 end
@@ -14,9 +30,9 @@ end
 # think it has to do with the fact that this cookbook is its own build
 # cookbook, and the recursion and inception that results. We can come
 # back later and tweak that if we want.
-file "/root/.gemrc" do
-  owner "root"
-  mode "0644"
+file '/root/.gemrc' do
+  owner 'root'
+  mode '0644'
   content <<-EOF
 ---
 :benchmark: false
@@ -30,8 +46,7 @@ install: --no-user-install
 :backtrace: true
 :bulk_threshold: 1000
 EOF
-  action  :create
+  action :create
 end
 
 ENV['PATH'] = "/opt/chefdk/bin:/opt/chefdk/embedded/bin:#{ENV['PATH']}"
-

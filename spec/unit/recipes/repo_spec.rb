@@ -19,13 +19,13 @@
 require 'spec_helper'
 
 describe 'delivery_build::chefdk' do
-  context "by default" do
+  context 'by default' do
     before do
       default_mocks
     end
 
     cached(:chef_run) do
-      runner = ChefSpec::SoloRunner.new do |node|
+      runner = ChefSpec::SoloRunner.new do |_node|
       end
       runner.converge('delivery_build::repo')
     end
@@ -39,4 +39,3 @@ describe 'delivery_build::chefdk' do
     end
   end
 end
-
