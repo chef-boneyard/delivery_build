@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 # The Push client
+
 case node['platform_family']
 when 'rhel'
   default['push_jobs']['package_url']      = 'https://opscode-private-chef.s3.amazonaws.com/el/6/x86_64/opscode-push-jobs-client-1.1.5-1.el6.x86_64.rpm'
@@ -30,11 +31,11 @@ default['push_jobs']['whitelist']        = { 'chef-client' => 'chef-client',
 default['delivery_build']['repo_name'] = 'chef/stable'
 
 # Directories we need for the builder workspace
-if node['platform_family'] == 'windows'
-  default['delivery_build']['root'] = File.join(ENV['USERPROFILE'], 'delivery', 'workspace')
-else
-  default['delivery_build']['root'] = '/var/opt/delivery/workspace'
-end
+default['delivery_build']['root'] = if node['platform_family'] == 'windows'
+                                      File.join(ENV['USERPROFILE'], 'delivery', 'workspace')
+                                    else
+                                      '/var/opt/delivery/workspace'
+                                    end
 
 default['delivery_build']['bin'] = File.join(node['delivery_build']['root'], 'bin')
 default['delivery_build']['lib'] = File.join(node['delivery_build']['root'], 'lib')
