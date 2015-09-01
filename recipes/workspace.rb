@@ -15,7 +15,7 @@
 #
 %w(root bin lib etc dot_chef).each do |dir|
   directory node['delivery_build'][dir] do
-    owner 'root'
+    owner 'root' unless windows?
     mode '0755'
     recursive true
   end
@@ -24,20 +24,20 @@ end
 # The SSH wrapper for Git
 template File.join(node['delivery_build']['bin'], 'git_ssh') do
   source 'git_ssh.erb'
-  owner 'root'
+  owner 'root' unless windows?
   mode '0755'
 end
 
 # The SSH Known Hosts File
 file node['delivery_build']['ssh_known_hosts_file'] do
-  owner 'dbuild'
+  owner 'dbuild' unless windows?
   mode '0644'
 end
 
 # Executes a job from pushy
 template File.join(node['delivery_build']['bin'], 'delivery-cmd') do
   source 'delivery-cmd.erb'
-  owner 'root'
+  owner 'root' unless windows?
   mode '0755'
 end
 
@@ -56,8 +56,8 @@ end
     # FIXME: here, for 'delivery_pem', we effectively allow just about
     # any committer (in the delivery sense) to do whatever she wants
     # on the CS server. No need to emphasize how bad that is.
-    owner node['delivery_build']['build_user']
-    group 'root'
+    owner node['delivery_build']['build_user'] unless windows?
+    group 'root' unless windows?
     mode '0600'
     content data_bag_content[data_bag_coords['key']]
   end
@@ -66,8 +66,8 @@ end
     # FIXME: here, for 'delivery_pem', we effectively allow just about
     # any committer (in the delivery sense) to do whatever she wants
     # on the CS server. No need to emphasize how bad that is.
-    owner node['delivery_build']['build_user']
-    group 'root'
+    owner node['delivery_build']['build_user'] unless windows?
+    group 'root' unless windows?
     mode '0600'
     content data_bag_content[data_bag_coords['key']]
   end
@@ -77,8 +77,8 @@ end
 delivery_config = ::File.join(node['delivery_build']['etc'], 'delivery.rb')
 template delivery_config do
   source 'delivery.rb.erb'
-  owner node['delivery_build']['build_user']
-  group 'root'
+  owner node['delivery_build']['build_user'] unless windows?
+  group 'root' unless windows?
   mode '0644'
 end
 
@@ -86,7 +86,7 @@ end
 knife_config = ::File.join(node['delivery_build']['dot_chef'], 'knife.rb')
 template knife_config do
   source 'delivery.rb.erb'
-  owner node['delivery_build']['build_user']
+  owner node['delivery_build']['build_user'] unless windows?
   mode '0644'
 end
 

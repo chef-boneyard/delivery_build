@@ -15,7 +15,10 @@
 #
 require 'chefspec'
 require 'chefspec/berkshelf'
+require 'chef/sugar'
 require_relative '../libraries/helper'
+
+ChefSpec::Coverage.start!
 
 def default_mocks
   dh = double('DeliveryHelper')
@@ -27,4 +30,6 @@ def default_mocks
   stub_command('chef --version | grep 0.4.0').and_return(false)
   stub_command('knife ssl check -c /var/opt/delivery/workspace/etc/delivery.rb').and_return(false)
   stub_command('knife ssl check -c /var/opt/delivery/workspace/etc/delivery.rb https://192.168.33.1').and_return(false)
+  stub_command('knife ssl check -c C:/Users/Administrator/delivery/workspace/etc/delivery.rb').and_return(false)
+  stub_command('knife ssl check -c C:/Users/Administrator/delivery/workspace/etc/delivery.rb https://192.168.33.1').and_return(false)
 end

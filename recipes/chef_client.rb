@@ -16,19 +16,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-directory '/etc/chef' do
+root = if windows?
+         'C:/chef'
+       else
+         '/etc/chef'
+       end
+
+directory root do
   mode 0755
+  recursive true
 end
 
-file '/etc/chef/client.rb' do
+file "#{root}/client.rb" do
   mode 0644
 end
 
-directory '/etc/chef/trusted_certs' do
+directory "#{root}/trusted_certs" do
   mode 0755
 end
 
-Dir['/etc/chef/trusted_certs/*'].each do |cert|
+Dir["#{root}/trusted_certs/*"].each do |cert|
   file cert do
     mode 0644
   end

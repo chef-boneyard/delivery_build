@@ -31,19 +31,40 @@ describe 'delivery_build::chefdk' do
       runner.converge('delivery_build::chefdk')
     end
 
-    it 'converges successfully' do
-      chef_run
+    cached(:windows_chef_run) do
+      ENV['USERPROFILE'] = 'C:/Users/Administrator'
+      runner = ChefSpec::SoloRunner.new(platform: 'windows', version: '2012R2') do |node|
+        node.set['delivery_build']['chefdk_version'] = '0.4.0'
+      end
+      runner.converge('delivery_build::chefdk')
     end
 
-    it 'installs chefdk' do
-      expect(chef_run).to upgrade_package('chefdk')
+    describe 'ubuntu' do
+      it 'converges successfully' do
+        chef_run
+      end
+
+      it 'installs chefdk' do
+        expect(chef_run).to upgrade_package('chefdk')
+      end
+
+      it 'configures .gemrc' do
+        expect(chef_run).to create_file('/root/.gemrc').with(
+          mode: '0644'
+        )
+      end
     end
 
-    it 'configures .gemrc' do
-      expect(chef_run).to create_file('/root/.gemrc').with(
-        owner: 'root',
-        mode: '0644'
-      )
+    describe 'windows' do
+      it 'installs chefdk' do
+        expect(windows_chef_run).to upgrade_package('chefdk')
+      end
+
+      it 'configures .gemrc' do
+        expect(windows_chef_run).to create_file('C:/Users/Administrator/.gemrc').with(
+          mode: '0644'
+        )
+      end
     end
   end
 end

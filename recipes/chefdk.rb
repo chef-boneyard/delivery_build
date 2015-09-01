@@ -13,9 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+windows_package_url = "https://opscode-omnibus-packages.s3.amazonaws.com/windows/2008r2/x86_64/chefdk-#{node['delivery_build']['chefdk_version']}-1.msi"
 
 package 'chefdk' do
   action :upgrade
+  source windows_package_url if windows?
 end
 
 # For now, we need to add a gemrc file to get Chef to install gems
@@ -30,8 +32,9 @@ end
 # think it has to do with the fact that this cookbook is its own build
 # cookbook, and the recursion and inception that results. We can come
 # back later and tweak that if we want.
-file '/root/.gemrc' do
-  owner 'root'
+gemrc_path = windows? ? File.join(ENV['USERPROFILE'], '.gemrc') : '/root/.gemrc'
+
+file gemrc_path do
   mode '0644'
   content <<-EOF
 ---
@@ -49,4 +52,8 @@ EOF
   action :create
 end
 
-ENV['PATH'] = "/opt/chefdk/bin:/opt/chefdk/embedded/bin:#{ENV['PATH']}"
+ENV['PATH'] = if windows?
+                'C:/Opscode/chefdk/bin;C:/Opscode/chefdk/embedded/bin;%PATH%'
+              else
+                "/opt/chefdk/bin:/opt/chefdk/embedded/bin:#{ENV['PATH']}"
+              end
