@@ -29,26 +29,42 @@ describe 'delivery_build::chef_client' do
       runner.converge('delivery_build::chef_client')
     end
 
-    it 'converges successfully' do
-      chef_run
+    cached(:windows_chef_run) do
+      ENV['USERPROFILE'] = 'C:/Users/Administrator'
+      runner = ChefSpec::SoloRunner.new(platform: 'windows', version: '2012R2')
+      runner.converge('delivery_build::chef_client')
     end
 
-    it 'sets /etc/chef perms to 0755' do
-      expect(chef_run).to create_directory('/etc/chef').with(
-        mode: 0755
-      )
+    describe 'ubuntu' do
+      it 'converges successfully' do
+        chef_run
+      end
+
+      it 'sets /etc/chef perms to 0755' do
+        expect(chef_run).to create_directory('/etc/chef').with(
+          mode: 0755
+        )
+      end
+
+      it 'sets client.rb perms to 0644' do
+        expect(chef_run).to create_file('/etc/chef/client.rb').with(
+          mode: 0644
+        )
+      end
+
+      it 'sets trusted_certs perms to 0755' do
+        expect(chef_run).to create_directory('/etc/chef/trusted_certs').with(
+          mode: 0755
+        )
+      end
     end
 
-    it 'sets client.rb perms to 0644' do
-      expect(chef_run).to create_file('/etc/chef/client.rb').with(
-        mode: 0644
-      )
-    end
-
-    it 'sets trusted_certs perms to 0755' do
-      expect(chef_run).to create_directory('/etc/chef/trusted_certs').with(
-        mode: 0755
-      )
+    describe 'windows' do
+      it 'sets client.rb perms to 0644' do
+        expect(windows_chef_run).to create_file('C:/chef/client.rb').with(
+          mode: 0644
+        )
+      end
     end
   end
 end

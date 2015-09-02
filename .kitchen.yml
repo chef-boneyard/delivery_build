@@ -14,6 +14,11 @@ platforms:
       - recipe[apt::default]
   - name: centos-6.6
   - name: centos-7.1
+  - name: windows-2008r2-standard
+    driver:
+      customize:
+        memory: 4096
+      box: chef/windows-server-2008r2-standard
 
 suites:
   - name: default

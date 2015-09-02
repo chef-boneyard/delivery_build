@@ -25,24 +25,48 @@ describe 'delivery_build::default' do
     end
 
     cached(:chef_run) do
-      runner = ChefSpec::SoloRunner.new
+      runner = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04')
       runner.converge('delivery_build::default')
     end
 
-    it 'converges successfully' do
-      chef_run
+    cached(:windows_chef_run) do
+      ENV['USERPROFILE'] = 'C:/Users/Administrator'
+      runner = ChefSpec::SoloRunner.new(platform: 'windows', version: '2012R2')
+      runner.converge('delivery_build::default')
     end
 
-    ['git',
-     'delivery_build::chef_client',
-     'delivery_build::repo',
-     'delivery_build::chefdk',
-     'delivery_build::user',
-     'delivery_build::workspace',
-     'delivery_build::cli'].each do |r|
-      it "includes #{r}" do
-        expect(chef_run).to include_recipe(r)
+    describe 'on ubuntu' do
+      it 'converges successfully' do
+        chef_run
       end
+
+      ['git',
+       'delivery_build::chef_client',
+       'delivery_build::repo',
+       'delivery_build::chefdk',
+       'delivery_build::user',
+       'delivery_build::workspace',
+       'delivery_build::cli'].each do |r|
+         it "includes #{r}" do
+           expect(chef_run).to include_recipe(r)
+         end
+       end
+    end
+
+    describe 'on windows' do
+      it 'converges successfully' do
+        windows_chef_run
+      end
+
+      ['git',
+       'delivery_build::chef_client',
+       'delivery_build::chefdk',
+       'delivery_build::workspace',
+       'delivery_build::cli'].each do |r|
+         it "includes #{r}" do
+           expect(windows_chef_run).to include_recipe(r)
+         end
+       end
     end
   end
 end

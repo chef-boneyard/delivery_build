@@ -19,7 +19,12 @@ if source_dir
   link '/usr/bin/delivery' do
     to File.join(source_dir, 'target', 'release', 'delivery')
   end
-# Support passing in the url to the cli package.
+  # Support passing in the url to the cli package.
+elsif windows?
+  package 'delivery-cli' do # ~FC009 FoodCritic is broken about windows_package
+    source node['delivery_build']['delivery-cli']['artifact']
+    installer_type :msi
+  end
 elsif node['delivery_build']['delivery-cli']['artifact']
   case node['platform_family']
   when 'rhel'

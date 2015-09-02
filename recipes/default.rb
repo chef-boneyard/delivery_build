@@ -16,20 +16,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_recipe 'chef-sugar'
+
 # Make sure client.rb is readable by dbuild
 include_recipe 'delivery_build::chef_client'
 
 # Install git
 include_recipe 'git'
 
-# Setup the Package Cloud Repo
-include_recipe 'delivery_build::repo'
+if %w(rhel fedora debian).include? node['platform_family']
+  # Setup the Package Cloud Repo
+  include_recipe 'delivery_build::repo'
+
+  # Create the dbuild user
+  include_recipe 'delivery_build::user'
+end
 
 # Install the Chef DK
 include_recipe 'delivery_build::chefdk'
-
-# Create the dbuild user
-include_recipe 'delivery_build::user'
 
 # Create the root delivery job workspace
 include_recipe 'delivery_build::workspace'
