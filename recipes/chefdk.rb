@@ -53,7 +53,7 @@ EOF
 end
 
 ENV['PATH'] = if windows?
-                'C:/Opscode/chefdk/bin;C:/Opscode/chefdk/embedded/bin;%PATH%'
+                "C:/Opscode/chefdk/bin;C:/Opscode/chefdk/embedded/bin;#{ENV['PATH']}"
               else
                 "/opt/chefdk/bin:/opt/chefdk/embedded/bin:#{ENV['PATH']}"
               end
