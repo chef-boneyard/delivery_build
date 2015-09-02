@@ -22,6 +22,8 @@ root = if windows?
          '/etc/chef'
        end
 
+node.set['delivery_build']['chef_root'] = root
+
 directory root do
   mode 0755
   recursive true
