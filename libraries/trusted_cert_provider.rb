@@ -45,7 +45,7 @@ class Chef
       #
       def append_trusted_cert
         ::File.open(new_resource.cacert_pem, 'a') do |io|
-          io.puts new_resource.name
+          io.puts "\nDelivery #{new_resource.name}"
           io.puts '========================='
           io.puts ::File.read(new_resource.path)
         end
@@ -55,7 +55,9 @@ class Chef
       # Validate that the cert is not already on the cacert.pem file
       #
       def trusted_cert_exists?
-        ::File.read(new_resource.cacert_pem).match(::File.read(new_resource.path))
+        ::File.read(new_resource.cacert_pem).match(
+          Regexp.escape(::File.read(new_resource.path))
+        )
       end
     end
   end

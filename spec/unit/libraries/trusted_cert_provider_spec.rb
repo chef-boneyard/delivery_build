@@ -72,7 +72,7 @@ IEVWIFJPT1QwHhcNMTIwODA4MDMwNzAxWhcNMjkxMjMxMDMwNzAxWjBWMQswCQYDVQQGEwJDTjEw
       end
     end
 
-    context 'when the trusted_cert exits' do
+    context 'when the trusted_cert exists' do
       before do
         allow(::File).to receive(:read)
           .with('/opt/chefdk/embedded/ssl/certs/cacert.pem')
