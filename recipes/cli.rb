@@ -26,10 +26,10 @@ elsif windows?
   remote_file pkg_path do
     checksum node['delivery_build']['delivery-cli']['checksum'] if node['delivery_build']['delivery-cli']['checksum']
     source node['delivery_build']['delivery-cli']['artifact']
-    notifies :run, "execute[install delivery-cli]", :immediately
+    notifies :run, 'execute[install delivery-cli]', :immediately
   end
 
-  execute "install delivery-cli" do
+  execute 'install delivery-cli' do
     command "#{pkg_path} /install /quiet"
     action :nothing
   end
