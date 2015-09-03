@@ -27,7 +27,9 @@ describe 'delivery_build::workspace' do
     let(:dirs) { %w(bin lib etc .chef) }
 
     cached(:chef_run) do
-      runner = ChefSpec::SoloRunner.new
+      runner = ChefSpec::SoloRunner.new do |node|
+        node.set['delivery_build']['chef_root'] = '/etc/chef'
+      end
       runner.converge('delivery_build::workspace')
     end
 
