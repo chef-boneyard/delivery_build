@@ -78,3 +78,12 @@ default['delivery_build']['cli_dir'] = nil
 default['delivery_build']['delivery-cli']['version'] = nil
 default['delivery_build']['delivery-cli']['artifact'] = nil
 default['delivery_build']['delivery-cli']['checksum'] = nil
+
+# Add trusted_certs to the build-node chefdk/cacerts.pem via trusted_certs.rb
+# Example:
+# {
+#   'Delivery Supermarket Server' => '/my/supermarket.crt',
+#   'Delivery Github Enterprise' => '/the/github.crt',
+#   'Another Component' => '/another/component.crt'
+# }
+default['delivery_build']['trusted_certs'] = {}

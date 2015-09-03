@@ -16,9 +16,12 @@
 require 'chefspec'
 require 'chefspec/berkshelf'
 require 'chef/sugar'
-require_relative '../libraries/helper'
 
 ChefSpec::Coverage.start!
+
+TOPDIR = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+$LOAD_PATH << File.expand_path(File.dirname(__FILE__))
+Dir.glob('libraries/*.rb') { |file| require File.expand_path(file) }
 
 def default_mocks
   dh = double('DeliveryHelper')
