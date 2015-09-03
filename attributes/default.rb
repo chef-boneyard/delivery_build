@@ -86,4 +86,4 @@ default['delivery_build']['delivery-cli']['checksum'] = nil
 #   'Delivery Github Enterprise' => 'path/host.crt',
 #   'Another Component' => 'path/host.crt'
 # }
-default['delivery_build']['trusted_certs'] = nil
+default['delivery_build']['trusted_certs'] = {}
