@@ -21,10 +21,19 @@ if source_dir
   end
   # Support passing in the url to the cli package.
 elsif windows?
-  package 'delivery-cli' do # ~FC009 FoodCritic is broken about windows_package
+  pkg_path = "#{Chef::Config[:file_cache_path]}/delivery-cli.exe"
+
+  remote_file pkg_path do
+    checksum node['delivery_build']['delivery-cli']['checksum'] if node['delivery_build']['delivery-cli']['checksum']
     source node['delivery_build']['delivery-cli']['artifact']
-    installer_type :msi
+    notifies :run, "execute[install delivery-cli]", :immediately
   end
+
+  execute "install delivery-cli" do
+    command "#{pkg_path} /install /quiet"
+    action :nothing
+  end
+
 elsif node['delivery_build']['delivery-cli']['artifact']
   case node['platform_family']
   when 'rhel'
