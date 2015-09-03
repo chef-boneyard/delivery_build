@@ -17,6 +17,12 @@ platforms:
   - name: centos-6.6
   - name: centos-7.1
   - name: windows-2008r2-standard
+    attributes:
+      delivery_build:
+        chefdk_version: 0.7.0
+        delivery-cli:
+          artifact: https://s3-us-west-2.amazonaws.com/give-me-delivery-now/delivery-cli-0.0.0%2B20150824144123-1.exe
+          checksum: bdfbd19c7885ae42120296839f314200c724dc1d548554c812673e921673bb3f
     driver:
       customize:
         memory: 4096
