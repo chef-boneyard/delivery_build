@@ -18,6 +18,8 @@ platforms:
   - name: centos-7.1
   - name: windows-2008r2-standard
     attributes:
+      omnibus:
+        ruby_version: 2.1.6-x64
       delivery_build:
         chefdk_version: 0.7.0
         delivery-cli:

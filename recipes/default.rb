@@ -43,3 +43,7 @@ include_recipe 'delivery_build::cli'
 
 # Add trusted_certs to chefdk/cacert.pem
 include_recipe 'delivery_build::trusted_certs'
+
+if windows?
+  ruby_install node['omnibus']['ruby_version']
+end
