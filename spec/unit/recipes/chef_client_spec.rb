@@ -31,6 +31,8 @@ describe 'delivery_build::chef_client' do
 
     cached(:windows_chef_run) do
       ENV['USERPROFILE'] = 'C:/Users/Administrator'
+      ENV['SYSTEMDRIVE'] = 'C:'
+      ::File::ALT_SEPARATOR = '\\'
       runner = ChefSpec::SoloRunner.new(platform: 'windows', version: '2012R2')
       runner.converge('delivery_build::chef_client')
     end

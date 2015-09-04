@@ -31,8 +31,9 @@ default['push_jobs']['whitelist']        = { 'chef-client' => 'chef-client',
 default['delivery_build']['repo_name'] = 'chef/stable'
 
 # Directories we need for the builder workspace
-default['delivery_build']['root'] = if node['platform_family'] == 'windows'
-                                      File.join(ENV['USERPROFILE'], 'delivery', 'workspace')
+default['delivery_build']['root'] = if platform_family == 'windows'
+                                      # We have to do ALT_SEPARATOR || SEPARATOR because ALT_SEPARATOR isn't defined on non windows hosts so the unit tests explode
+                                      File.join(ENV['USERPROFILE'], 'delivery', 'workspace').gsub(File::ALT_SEPARATOR || File::SEPARATOR, File::SEPARATOR)
                                     else
                                       '/var/opt/delivery/workspace'
                                     end

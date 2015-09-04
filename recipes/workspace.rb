@@ -80,6 +80,7 @@ template delivery_config do
   owner node['delivery_build']['build_user'] unless windows?
   group 'root' unless windows?
   mode '0644'
+  variables(lazy { { 'root' => node['delivery_build']['chef_root'] } })
 end
 
 # This is used by the delivery CLI-based build node workflow
@@ -88,6 +89,7 @@ template knife_config do
   source 'delivery.rb.erb'
   owner node['delivery_build']['build_user'] unless windows?
   mode '0644'
+  variables(lazy { { 'root' => node['delivery_build']['chef_root'] } })
 end
 
 # Fetch the SSL certificate for the CS if necessary. For example, it's
