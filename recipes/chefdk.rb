@@ -13,13 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-windows_package_url = "https://opscode-omnibus-packages.s3.amazonaws.com/windows/2008r2/x86_64/chefdk-#{node['delivery_build']['chefdk_version']}-1.msi"
 gemrc_path = '/root/.gemrc'
 
 if windows?
   gemrc_path = File.join(ENV['USERPROFILE'], '.gemrc')
 
-  windows_package 'chefdk' do
+  pkg_name = "Chef Development Kit v#{node['delivery_build']['chefdk_version']}"
+  windows_package_url = "https://opscode-omnibus-packages.s3.amazonaws.com/windows/2008r2/x86_64/chefdk-#{node['delivery_build']['chefdk_version']}-1.msi"
+
+  windows_package pkg_name do
     source windows_package_url
     installer_type :msi
   end
