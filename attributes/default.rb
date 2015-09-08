@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 # The Push client
+include_attribute 'push-jobs'
 
 case node['platform_family']
 when 'rhel'
