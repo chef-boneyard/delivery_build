@@ -57,7 +57,7 @@ describe 'delivery_build::chefdk' do
 
     describe 'windows' do
       it 'installs chefdk' do
-        expect(windows_chef_run).to install_windows_package('chefdk')
+        expect(windows_chef_run).to install_windows_package('Chef Development Kit v0.4.0')
       end
 
       it 'configures .gemrc' do
