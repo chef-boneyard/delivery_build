@@ -25,8 +25,6 @@ when 'debian'
   default['push_jobs']['package_checksum'] = '72ad9b23e058391e8dd1eaa5ba2c8af1a6b8a6c5061c6d28ee2c427826283492'
 end
 
-default['push_jobs']['whitelist']        = { 'chef-client' => 'chef-client',
-                                             /^delivery-cmd (.+)$/ => '/var/opt/delivery/workspace/bin/delivery-cmd \'\1\'' }
 
 # The repo that we should pull chefdk and delivery-cli
 default['delivery_build']['repo_name'] = 'chef/stable'
@@ -89,3 +87,14 @@ default['delivery_build']['delivery-cli']['checksum'] = nil
 #   'Another Component' => '/another/component.crt'
 # }
 default['delivery_build']['trusted_certs'] = {}
+
+# variable for delivery-cmd on windows
+delivery_cmd = if platform_family == 'windows'
+                 # We have to do ALT_SEPARATOR || SEPARATOR because ALT_SEPARATOR isn't defined on non windows hosts so the unit tests explode
+                 File.join(node['delivery_build']['bin'], 'delivery-cmd).gsub(File::ALT_SEPARATOR || File::SEPARATOR, File::SEPARATOR)
+                else
+                 "#{node['delivery_build']['bin']}/delivery-cmd"
+                end
+
+default['push_jobs']['whitelist'] = { 'chef-client' => 'chef-client',
+                                       /^delivery-cmd (.+)$/ => "#{delivery_cmd} '\1'" }
