@@ -96,4 +96,4 @@ delivery_cmd = if platform_family == 'windows'
                end
 
 default['push_jobs']['whitelist'] = { 'chef-client'         => 'chef-client',
-                                      /^delivery-cmd (.+)$/ => "#{delivery_cmd} '\1'" }
+                                      /^delivery-cmd (.+)$/ => "#{delivery_cmd} '\\1'" }
