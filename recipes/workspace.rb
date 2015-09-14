@@ -13,7 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-%w(root bin lib etc dot_chef).each do |dir|
+
+%w(root dot_chef).each do |dir|
+  directory node['delivery_build'][dir] do
+    owner node['delivery_build']['build_user']
+    group node['delivery_build']['build_user']
+    mode '0755'
+    recursive true
+  end
+end
+
+%w(bin lib etc).each do |dir|
   directory node['delivery_build'][dir] do
     owner 'root' unless windows?
     mode '0755'
