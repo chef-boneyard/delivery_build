@@ -27,7 +27,11 @@ if windows?
   end
 else
   package 'chefdk' do
-    action :upgrade
+    if node['delivery_build']['chefdk_version'].eql?('latest')
+      action :upgrade
+    else
+      version node['delivery_build']['chefdk_version']
+    end
   end
 end
 
