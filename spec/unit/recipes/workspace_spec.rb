@@ -24,7 +24,7 @@ describe 'delivery_build::workspace' do
       default_mocks
     end
 
-    let(:dirs) { %w(bin lib etc .chef) }
+    let(:dirs) { %w(bin lib etc) }
 
     cached(:chef_run) do
       runner = ChefSpec::SoloRunner.new do |node|
@@ -67,15 +67,25 @@ describe 'delivery_build::workspace' do
 
       let(:workspace) { '/var/opt/delivery/workspace' }
 
-      it 'should create the workspace' do
+      it 'should create the workspace own by dbuild' do
         expect(chef_run).to create_directory(workspace).with(
-          owner: 'root',
+          owner: 'dbuild',
+          group: 'dbuild',
           mode: '0755',
           recursive: true
         )
       end
 
-      it 'should create subdirectories' do
+      it 'should create the .chef own by dbuild' do
+        expect(chef_run).to create_directory(File.join(workspace, '.chef')).with(
+          owner: 'dbuild',
+          group: 'dbuild',
+          mode: '0755',
+          recursive: true
+        )
+      end
+
+      it 'should create subdirectories own by root' do
         dirs.each do |dir|
           path = File.join(workspace, dir)
           expect(chef_run).to create_directory(path).with(
