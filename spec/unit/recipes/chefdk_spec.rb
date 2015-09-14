@@ -24,11 +24,11 @@ describe 'delivery_build::chefdk' do
       default_mocks
     end
 
-    cached(:chef_run) do
+    let(:chef_run) do
       runner = ChefSpec::SoloRunner.new do |node|
         node.set['delivery_build']['chefdk_version'] = '0.4.0'
       end
-      runner.converge('delivery_build::chefdk')
+      runner.converge(described_recipe)
     end
 
     cached(:windows_chef_run) do
@@ -36,7 +36,7 @@ describe 'delivery_build::chefdk' do
       runner = ChefSpec::SoloRunner.new(platform: 'windows', version: '2012R2') do |node|
         node.set['delivery_build']['chefdk_version'] = '0.4.0'
       end
-      runner.converge('delivery_build::chefdk')
+      runner.converge(described_recipe)
     end
 
     describe 'ubuntu' do
@@ -44,8 +44,19 @@ describe 'delivery_build::chefdk' do
         chef_run
       end
 
-      it 'installs chefdk' do
-        expect(chef_run).to upgrade_package('chefdk')
+      it 'installs chefdk v0.4.0' do
+        expect(chef_run).to install_package('chefdk').with_version('0.4.0')
+      end
+
+      context 'when chefdk_version is latest' do
+        before do
+          chef_run.node.set['delivery_build']['chefdk_version'] = 'latest'
+          chef_run.converge(described_recipe)
+        end
+
+        it 'upgrades chefdk' do
+          expect(chef_run).to upgrade_package('chefdk')
+        end
       end
 
       it 'configures .gemrc' do

@@ -78,6 +78,19 @@ default['delivery_build']['delivery-cli']['version'] = nil
 default['delivery_build']['delivery-cli']['artifact'] = nil
 default['delivery_build']['delivery-cli']['checksum'] = nil
 
+# ChefDK version
+#
+# Specify the chefdk version you want to install on the build-nodes
+# set it to `latest` to always be in the latest version (:upgrade)
+default['delivery_build']['chefdk_version'] = if platform_family == 'windows'
+                                                # Currently there is no "easy" way to get the latest version
+                                                # of chefdk for windows systems, therefore we will hardcode it
+                                                # until we have a final solution for this.
+                                                '0.7.0'
+                                              else
+                                                'latest'
+                                              end
+
 # Add trusted_certs to the build-node chefdk/cacerts.pem via trusted_certs.rb
 # Example:
 # {
