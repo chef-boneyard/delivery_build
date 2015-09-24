@@ -51,10 +51,9 @@ spec/*
 spec/fixtures/*
 test/*
 features/*
+examples/*
 Guardfile
 Procfile
-.kitchen
-.kitchen.local.yml
 
 # SCM #
 #######
@@ -79,6 +78,7 @@ tmp
 # Cookbooks #
 #############
 CONTRIBUTING
+CHANGELOG*
 
 # Strainer #
 ############
@@ -95,3 +95,6 @@ Vagrantfile
 # Travis #
 ##########
 .travis.yml
+test/
+spec/
+examples/
