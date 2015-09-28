@@ -124,6 +124,9 @@ describe 'delivery_build::workspace' do
         expect(chef_run).to render_file(filename).with_content(
           /class Streamy/
         )
+        expect(chef_run).to_not render_file(filename).with_content(
+          /Raven/
+        )
       end
 
       it 'creates the builder ssh key' do
@@ -196,6 +199,31 @@ describe 'delivery_build::workspace' do
       it 'fetches the delivery chef server ssl key' do
         expect(chef_run).to run_execute('fetch_delivery_ssl_certificate').with(
           command: 'knife ssl fetch -c /var/opt/delivery/workspace/etc/delivery.rb https://192.168.33.1'
+        )
+      end
+    end
+
+    context "with node['delivery_build']['sentry_dsn'] set" do
+      before do
+        default_mocks
+      end
+
+      cached(:chef_run) do
+        runner = ChefSpec::SoloRunner.new
+        runner.node.normal['delivery_build']['sentry_dsn'] = 'https://sentry_dsn'
+        runner.converge('delivery_build::workspace')
+      end
+
+      it 'adds raven gem to chefdk' do
+        expect(chef_run).to run_execute('install_sentry-raven').with(
+          command: '/opt/chefdk/bin/chef gem install sentry-raven'
+        )
+      end
+
+      it 'configures delivery-cmd to use Raven' do
+        filename = '/var/opt/delivery/workspace/bin/delivery-cmd'
+        expect(chef_run).to render_file(filename).with_content(
+          /Raven/
         )
       end
     end

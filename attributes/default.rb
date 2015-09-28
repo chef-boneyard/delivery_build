@@ -70,6 +70,9 @@ default['delivery_build']['builder_keys'] = {
   }
 }
 
+# Sentry DSN for use with exception handling in delivery-cmd
+default['delivery_build']['sentry_dsn'] = nil
+
 # The location of the Delivery API
 default['delivery_build']['api'] = nil
 
