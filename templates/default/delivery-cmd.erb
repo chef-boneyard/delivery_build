@@ -7,6 +7,13 @@ require 'chef/client'
 require 'base64'
 require 'uri'
 require 'date'
+<% if node['delivery_build']['sentry_dsn'] -%>
+require 'sentry-raven'
+
+Raven.configure do |config|
+  config.dsn = '<%= node['delivery_build']['sentry_dsn'] %>'
+end
+<% end -%>
 
 module Delivery
   # Helper methods for our build node job runner workflow.
@@ -84,6 +91,10 @@ class Streamy
     @output
   end
 end
+
+<% if node['delivery_build']['sentry_dsn'] -%>
+Raven.capture do
+<% end -%>
 
 workspace_root = "<%= node['delivery_build']['root'] %>"
 workspace_bin = "<%= node['delivery_build']['bin'] %>"
@@ -172,3 +183,6 @@ else
     builder_auth_headers
   )
 end
+<% if node['delivery_build']['sentry_dsn'] -%>
+end
+<% end -%>

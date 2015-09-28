@@ -44,6 +44,12 @@ file node['delivery_build']['ssh_known_hosts_file'] do
   mode '0644'
 end
 
+if node['delivery_build']['sentry_dsn']
+  execute 'install_sentry-raven' do
+    command '/opt/chefdk/bin/chef gem install sentry-raven'
+  end
+end
+
 # Executes a job from pushy
 template File.join(node['delivery_build']['bin'], 'delivery-cmd') do
   source 'delivery-cmd.erb'
