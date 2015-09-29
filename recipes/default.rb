@@ -27,10 +27,10 @@ include_recipe 'git'
 if %w(rhel fedora debian).include? node['platform_family']
   # Setup the Package Cloud Repo
   include_recipe 'delivery_build::repo'
-
-  # Create the dbuild user
-  include_recipe 'delivery_build::user'
 end
+
+# Create the dbuild user
+include_recipe 'delivery_build::user'
 
 # Install the Chef DK
 include_recipe 'delivery_build::chefdk'
