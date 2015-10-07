@@ -18,6 +18,9 @@
 
 include_recipe 'chef-sugar'
 
+# Delivery base cookbook that includes push-jobs
+include_recipe 'delivery-base'
+
 # Make sure client.rb is readable by dbuild
 include_recipe 'delivery_build::chef_client'
 
