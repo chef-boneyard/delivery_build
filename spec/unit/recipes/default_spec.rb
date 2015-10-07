@@ -43,6 +43,7 @@ describe 'delivery_build::default' do
       end
 
       ['git',
+       'delivery-base',
        'delivery_build::chef_client',
        'delivery_build::repo',
        'delivery_build::chefdk',
@@ -61,6 +62,7 @@ describe 'delivery_build::default' do
       end
 
       ['git',
+       'delivery-base',
        'delivery_build::chef_client',
        'delivery_build::chefdk',
        'delivery_build::workspace',
