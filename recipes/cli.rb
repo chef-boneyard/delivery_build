@@ -5,10 +5,12 @@
 source_dir = node['delivery_build']['delivery-cli']['source_dir'] || node['delivery_build']['cli_dir']
 if source_dir
 
-  # Run rustup.sh via the rustup make target in the delivery-cli repo
-  execute 'prepare node for delivery-cli building' do
+  execute 'berks vendor cookbooks' do
     cwd "#{source_dir}/cookbooks/delivery_rust"
-    command 'berks vendor cookbooks && chef-client -z -o delivery_rust::default'
+  end
+
+  execute 'chef-client -z -o delivery_rust::default' do
+    cwd "#{source_dir}/cookbooks/delivery_rust"
   end
 
   execute 'make build' do
