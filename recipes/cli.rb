@@ -15,7 +15,6 @@ if source_dir
 
   execute 'make build' do
     cwd source_dir
-    environment('LD_LIBRARY_PATH' => '/usr/local/lib')
   end
 
   if windows?
