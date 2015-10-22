@@ -7,6 +7,7 @@ if source_dir
 
   execute 'berks vendor cookbooks' do
     cwd "#{source_dir}/cookbooks/delivery_rust"
+    creates  "#{source_dir}/cookbooks/delivery_rust/cookbooks"
   end
 
   execute 'chef-client -z -o delivery_rust::default' do
