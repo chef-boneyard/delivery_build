@@ -16,8 +16,17 @@ if source_dir
     environment('LD_LIBRARY_PATH' => '/usr/local/lib')
   end
 
-  link '/usr/bin/delivery' do
-    to File.join(source_dir, 'target', 'release', 'delivery')
+  if windows?
+    env 'add to Path' do
+      key_name 'PATH'
+      delim ';'
+      action :modify
+      value "#{source_dir}/target/release"
+    end
+  else
+    link '/usr/bin/delivery' do
+      to File.join(source_dir, 'target', 'release', 'delivery')
+    end
   end
   # Support passing in the url to the cli package.
 elsif windows?
