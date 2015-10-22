@@ -47,7 +47,7 @@ class Chef
         ::File.open(new_resource.cacert_pem, 'a') do |io|
           io.puts "\nDelivery #{new_resource.name}"
           io.puts '========================='
-          io.puts ::File.read(new_resource.path)
+          io.puts contents
         end
       end
 
@@ -55,9 +55,11 @@ class Chef
       # Validate that the cert is not already on the cacert.pem file
       #
       def trusted_cert_exists?
-        ::File.read(new_resource.cacert_pem).match(
-          Regexp.escape(::File.read(new_resource.path))
-        )
+        ::File.read(new_resource.cacert_pem).match(Regexp.escape(contents))
+      end
+
+      def contents
+        ::File.read(Chef::Config.platform_specific_path(new_resource.path))
       end
     end
   end
