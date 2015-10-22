@@ -25,4 +25,3 @@ class DeliveryBuild
     end
   end
 end
-
