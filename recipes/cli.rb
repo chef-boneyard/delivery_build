@@ -5,19 +5,30 @@
 source_dir = node['delivery_build']['delivery-cli']['source_dir'] || node['delivery_build']['cli_dir']
 if source_dir
 
-  # Run rustup.sh via the rustup make target in the delivery-cli repo
-  execute 'prepare node for delivery-cli building' do
+  execute 'berks vendor cookbooks' do
     cwd "#{source_dir}/cookbooks/delivery_rust"
-    command 'berks vendor cookbooks && chef-client -z -o delivery_rust::default'
+    creates "#{source_dir}/cookbooks/delivery_rust/cookbooks"
+  end
+
+  execute 'chef-client -z -o delivery_rust::default' do
+    cwd "#{source_dir}/cookbooks/delivery_rust"
   end
 
   execute 'make build' do
     cwd source_dir
-    environment('LD_LIBRARY_PATH' => '/usr/local/lib')
   end
 
-  link '/usr/bin/delivery' do
-    to File.join(source_dir, 'target', 'release', 'delivery')
+  if windows?
+    env 'add to Path' do
+      key_name 'PATH'
+      delim ';'
+      action :modify
+      value "#{source_dir}/target/release"
+    end
+  else
+    link '/usr/bin/delivery' do
+      to File.join(source_dir, 'target', 'release', 'delivery')
+    end
   end
   # Support passing in the url to the cli package.
 elsif windows?

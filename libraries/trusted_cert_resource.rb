@@ -29,7 +29,7 @@ class Chef
         @provider = Chef::Provider::TrustedCert
 
         # This is the default location of the cacert.pem in chefdk
-        @cacert_pem = '/opt/chefdk/embedded/ssl/certs/cacert.pem'
+        @cacert_pem = DeliveryBuild::PathHelper.omnibus_embedded_path('chefdk', 'ssl/certs/cacert.pem')
 
         @action = :append
         @allowed_actions.push(:append)
