@@ -24,11 +24,14 @@ describe 'delivery_build::chefdk' do
       default_mocks
     end
 
-    let(:chef_run) do
-      runner = ChefSpec::SoloRunner.new do |node|
+    let(:default_runner) do
+      ChefSpec::SoloRunner.new do |node|
         node.set['delivery_build']['chefdk_version'] = '0.4.0'
       end
-      runner.converge(described_recipe)
+    end
+
+    let(:chef_run) do
+      default_runner.converge(described_recipe)
     end
 
     cached(:windows_chef_run) do
@@ -45,7 +48,25 @@ describe 'delivery_build::chefdk' do
       end
 
       it 'installs chefdk v0.4.0' do
-        expect(chef_run).to install_package('chefdk').with_version('0.4.0')
+        expect(chef_run).to install_chef_ingredient('chefdk').with_version('0.4.0')
+      end
+
+      it 'installs chefdk from the stable channel by default' do
+        expect(chef_run).to install_chef_ingredient('chefdk').with_channel(:stable)
+      end
+
+      %w(chef/stable stable).each do |value|
+        it "installs chefdk from the stable channel when repo_name is set to '#{value}'" do
+          default_runner.node.set['delivery_build']['repo_name'] = value
+          expect(chef_run).to install_chef_ingredient('chefdk').with_channel(:stable)
+        end
+      end
+
+      %w(chef/current current).each do |value|
+        it "installs chefdk from the current channel when repo_name is set to '#{value}'" do
+          default_runner.node.set['delivery_build']['repo_name'] = value
+          expect(chef_run).to install_chef_ingredient('chefdk').with_channel(:current)
+        end
       end
 
       context 'when chefdk_version is latest' do
@@ -55,7 +76,7 @@ describe 'delivery_build::chefdk' do
         end
 
         it 'upgrades chefdk' do
-          expect(chef_run).to upgrade_package('chefdk')
+          expect(chef_run).to upgrade_chef_ingredient('chefdk')
         end
       end
 
