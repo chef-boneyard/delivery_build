@@ -34,13 +34,12 @@ describe 'delivery_build::workspace' do
     end
 
     cached(:windows_chef_run) do
-      ENV['USERPROFILE'] = 'C:/Users/Administrator'
       runner = ChefSpec::SoloRunner.new(platform: 'windows', version: '2012R2')
       runner.converge('delivery_build::workspace')
     end
 
     describe 'windows' do
-      let(:workspace) { 'C:/Users/Administrator/delivery/workspace' }
+      let(:workspace) { '/var/opt/delivery/workspace' }
 
       it 'should create the workspace' do
         expect(windows_chef_run).to create_directory(workspace).with(
@@ -57,6 +56,11 @@ describe 'delivery_build::workspace' do
             recursive: true
           )
         end
+      end
+
+      it 'should add the delivery-cmd.cmd' do
+        filename = "#{workspace}/bin/delivery-cmd.cmd"
+        expect(windows_chef_run).to render_file(filename)
       end
     end
 

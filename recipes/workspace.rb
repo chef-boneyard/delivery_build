@@ -57,6 +57,11 @@ template File.join(node['delivery_build']['bin'], 'delivery-cmd') do
   mode '0755'
 end
 
+template File.join(node['delivery_build']['bin'], 'delivery-cmd.cmd') do
+  only_if { windows? }
+  source 'delivery-cmd.cmd.erb'
+end
+
 # a bunch of keys we need for the build
 # this is inside the 'if change' block mainly
 # because otherwise that would fail on the very-first

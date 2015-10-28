@@ -20,12 +20,7 @@ include_attribute 'delivery-base'
 default['delivery_build']['repo_name'] = 'chef/stable'
 
 # Directories we need for the builder workspace
-default['delivery_build']['root'] = if platform_family == 'windows'
-                                      # We have to do ALT_SEPARATOR || SEPARATOR because ALT_SEPARATOR isn't defined on non windows hosts so the unit tests explode
-                                      File.join(ENV['USERPROFILE'], 'delivery', 'workspace').gsub(File::ALT_SEPARATOR || File::SEPARATOR, File::SEPARATOR)
-                                    else
-                                      '/var/opt/delivery/workspace'
-                                    end
+default['delivery_build']['root'] = '/var/opt/delivery/workspace'
 
 default['delivery_build']['bin'] = File.join(node['delivery_build']['root'], 'bin')
 default['delivery_build']['lib'] = File.join(node['delivery_build']['root'], 'lib')
@@ -96,10 +91,9 @@ default['delivery_build']['trusted_certs'] = {}
 
 # variable for delivery-cmd on windows
 delivery_cmd = if platform_family == 'windows'
-                 # We have to do ALT_SEPARATOR || SEPARATOR because ALT_SEPARATOR isn't defined on non windows hosts so the unit tests explode
-                 File.join(node['delivery_build']['bin'], 'delivery-cmd').gsub(File::ALT_SEPARATOR || File::SEPARATOR, File::SEPARATOR)
+                 File.join(node['delivery_build']['bin'], 'delivery-cmd.cmd')
                else
-                 "#{node['delivery_build']['bin']}/delivery-cmd"
+                 File.join(node['delivery_build']['bin'], 'delivery-cmd')
                end
 
 default['push_jobs']['whitelist'] = { 'chef-client'         => 'chef-client',
