@@ -30,12 +30,25 @@ describe 'delivery_build::chefdk' do
       runner.converge('delivery_build::repo')
     end
 
+    cached(:vivid_chef_run) do
+      # looks like this platform is not shipping with fauxhai and we can't
+      # write into the chefdk's gem path as it could be owned by another user,
+      # so we'll vendor our own copy
+      json = File.expand_path(File.join(File.dirname(__FILE__),
+                                        %w(.. .. fixtures ubuntu-15.04.json)))
+
+      runner = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '15.04', path: json)
+      runner.converge('delivery_build::repo')
+    end
+
     it 'converges successfully' do
       chef_run
     end
 
-    it 'sets up the chef/stable package cloud repo' do
-      expect(chef_run).to create_packagecloud_repo('chef/stable')
+    describe 'ubuntu-15.04' do
+      it 'sets the apt-chef codename to trusty' do
+        expect(vivid_chef_run.node['apt-chef']['codename']).to eq('trusty')
+      end
     end
   end
 end

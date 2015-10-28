@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-packagecloud_repo node['delivery_build']['repo_name'] do
-  type value_for_platform_family(debian: 'deb', rhel: 'rpm')
+
+# Attempt to use latest pacakges possible for Ubuntu releases greater than 14.04.
+#
+# Note that this is also guarded with a `== 'lucid'` check which is the current
+# upstream behavior in apt-chef. Once this behavior is updated it should
+# short-circuit this fix and then can be removed. Love, Fletcher ;)
+if ubuntu_after_trusty? && node['apt-chef']['codename'] == 'lucid'
+  node.set['apt-chef']['codename'] = 'trusty'
 end

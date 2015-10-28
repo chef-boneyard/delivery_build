@@ -67,7 +67,8 @@ elsif node['delivery_build']['delivery-cli']['artifact']
     provider Chef::Provider::Package::Dpkg if node['platform_family'].eql?('debian')
   end
 else
-  package 'delivery-cli' do
+  chef_ingredient 'delivery-cli' do
+    channel node['delivery_build']['repo_name'].sub(%r{^chef/}, '').to_sym
     action :upgrade
   end
 end

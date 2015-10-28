@@ -26,12 +26,10 @@ if windows?
     installer_type :msi
   end
 else
-  package 'chefdk' do
-    if node['delivery_build']['chefdk_version'].eql?('latest')
-      action :upgrade
-    else
-      version node['delivery_build']['chefdk_version']
-    end
+  chef_ingredient 'chefdk' do
+    channel node['delivery_build']['repo_name'].sub(%r{^chef/}, '').to_sym
+    version node['delivery_build']['chefdk_version']
+    action :upgrade if node['delivery_build']['chefdk_version'].eql?('latest')
   end
 end
 
