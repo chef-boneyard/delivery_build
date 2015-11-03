@@ -79,7 +79,7 @@ default['delivery_build']['chefdk_version'] = if platform_family == 'windows'
                                                 # Currently there is no "easy" way to get the latest version
                                                 # of chefdk for windows systems, therefore we will hardcode it
                                                 # until we have a final solution for this.
-                                                '0.7.0'
+                                                '0.9.0'
                                               else
                                                 'latest'
                                               end
