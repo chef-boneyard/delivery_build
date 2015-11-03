@@ -93,12 +93,7 @@ default['delivery_build']['chefdk_version'] = if platform_family == 'windows'
 # }
 default['delivery_build']['trusted_certs'] = {}
 
-# variable for delivery-cmd on windows
-delivery_cmd = if platform_family == 'windows'
-                 File.join(node['delivery_build']['bin'], 'delivery-cmd.cmd')
-               else
-                 File.join(node['delivery_build']['bin'], 'delivery-cmd')
-               end
+delivery_cmd = File.join(node['delivery_build']['bin'], 'delivery-cmd')
 
 default['push_jobs']['whitelist'] = { 'chef-client'         => 'chef-client',
                                       /^delivery-cmd (.+)$/ => "#{delivery_cmd} '\\1'" }
