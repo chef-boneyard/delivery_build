@@ -39,7 +39,7 @@ describe 'delivery_build::workspace' do
     end
 
     describe 'windows' do
-      let(:workspace) { '/var/opt/delivery/workspace' }
+      let(:workspace) { 'C:/delivery/ws' }
 
       it 'should create the workspace' do
         expect(windows_chef_run).to create_directory(workspace).with(

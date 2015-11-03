@@ -20,7 +20,7 @@ include_attribute 'delivery-base'
 default['delivery_build']['repo_name'] = 'chef/stable'
 
 # Directories we need for the builder workspace
-default['delivery_build']['root'] = '/var/opt/delivery/workspace'
+default['delivery_build']['root'] = platform_family == 'windows' ? 'C:/delivery/ws' : '/var/opt/delivery/workspace'
 
 default['delivery_build']['bin'] = File.join(node['delivery_build']['root'], 'bin')
 default['delivery_build']['lib'] = File.join(node['delivery_build']['root'], 'lib')
