@@ -9,7 +9,7 @@ if node['delivery_build']['delivery-cli']['artifact']
 
   package 'delivery-cli' do
     source pkg_path
-    version node['delivery_build']['delivery-cli']['version'] # unless windows?
+    version node['delivery_build']['delivery-cli']['version']
     provider value_for_platform_family(
       debian:  Chef::Provider::Package::Dpkg,
       rhel:    Chef::Provider::Package::Rpm,
