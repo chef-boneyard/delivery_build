@@ -20,7 +20,7 @@ include_attribute 'delivery-base'
 default['delivery_build']['repo_name'] = 'chef/stable'
 
 # Directories we need for the builder workspace
-default['delivery_build']['root'] = '/var/opt/delivery/workspace'
+default['delivery_build']['root'] = platform_family == 'windows' ? 'C:/delivery/ws' : '/var/opt/delivery/workspace'
 
 default['delivery_build']['bin'] = File.join(node['delivery_build']['root'], 'bin')
 default['delivery_build']['lib'] = File.join(node['delivery_build']['root'], 'lib')
@@ -79,7 +79,7 @@ default['delivery_build']['chefdk_version'] = if platform_family == 'windows'
                                                 # Currently there is no "easy" way to get the latest version
                                                 # of chefdk for windows systems, therefore we will hardcode it
                                                 # until we have a final solution for this.
-                                                '0.7.0'
+                                                '0.9.0'
                                               else
                                                 'latest'
                                               end
@@ -93,12 +93,7 @@ default['delivery_build']['chefdk_version'] = if platform_family == 'windows'
 # }
 default['delivery_build']['trusted_certs'] = {}
 
-# variable for delivery-cmd on windows
-delivery_cmd = if platform_family == 'windows'
-                 File.join(node['delivery_build']['bin'], 'delivery-cmd.cmd')
-               else
-                 File.join(node['delivery_build']['bin'], 'delivery-cmd')
-               end
+delivery_cmd = File.join(node['delivery_build']['bin'], 'delivery-cmd')
 
 default['push_jobs']['whitelist'] = { 'chef-client'         => 'chef-client',
                                       /^delivery-cmd (.+)$/ => "#{delivery_cmd} '\\1'" }
