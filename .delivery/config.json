@@ -6,7 +6,8 @@
   },
   "delivery-truck": {
     "publish": {
-      "github": "chef-cookbooks/delivery_build"
+      "github": "chef-cookbooks/delivery_build",
+      "chef-server": true
     }
   },
   "skip_phases": [
