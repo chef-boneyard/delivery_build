@@ -24,6 +24,7 @@ if windows?
   windows_package pkg_name do
     source windows_package_url
     installer_type :msi
+    timeout 1800 # 30 minute timeout (this can be really slow)
   end
 else
   chef_ingredient 'chefdk' do
