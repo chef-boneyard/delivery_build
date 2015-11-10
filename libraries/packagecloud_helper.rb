@@ -48,7 +48,7 @@ module PackageCloud
         http = Net::HTTP.new(uri.hostname, uri.port)
         http.use_ssl = true
 
-        response = http.start { |h|  h.request(request) }
+        response = http.start { |h| h.request(request) }
       end
 
       fail response.inspect unless response.is_a? Net::HTTPSuccess

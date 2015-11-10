@@ -16,8 +16,8 @@
 
 %w(root dot_chef).each do |dir|
   directory node['delivery_build'][dir] do
-    owner node['delivery_build']['build_user']
-    group node['delivery_build']['build_user']
+    owner node['delivery_build']['build_user'] unless windows?
+    group node['delivery_build']['build_user'] unless windows?
     mode '0755'
     recursive true
   end
