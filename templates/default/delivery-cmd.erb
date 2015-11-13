@@ -135,7 +135,7 @@ http_proxy = Chef::Config[:http_proxy] || ENV['HTTP_PROXY'] || ENV['http_proxy']
 no_proxy = Chef::Config[:no_proxy] || ENV['NO_PROXY'] || ENV['no_proxy']
 
 cli_env = {
-  'PATH' => DeliveryBuild::PathHelper.system_path_with_chefdk(ENV['PATH']),
+  'PATH' => ['<%=DeliveryBuild::PathHelper.system_path_with_chefdk%>', ENV['PATH']].join(File::PATH_SEPARATOR),
   'LC_ALL' => 'en_US.UTF-8',
   'GIT_SSH' => File.join(workspace_bin, 'git_ssh'),
   'HOME' => workspace_root,

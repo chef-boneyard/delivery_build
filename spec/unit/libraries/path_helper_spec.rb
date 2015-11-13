@@ -9,22 +9,20 @@ describe DeliveryBuild::PathHelper do
         allow(Chef::Platform).to receive(:windows?).and_return(true)
       end
 
-      let(:env)             { 'C:/windows/paths;C:/other/windows/path' }
       let(:chefdk)          { 'C:/opscode/chefdk/bin' }
       let(:chefdk_embedded) { 'C:/opscode/chefdk/embedded/bin' }
 
       it 'returns a windows like path with chefdk' do
-        expect(DeliveryBuild::PathHelper.system_path_with_chefdk(env)).to eq("#{chefdk};#{chefdk_embedded};#{env}")
+        expect(DeliveryBuild::PathHelper.system_path_with_chefdk).to eq("#{chefdk};#{chefdk_embedded}")
       end
     end
 
     context 'elsewhere' do
-      let(:env)             { '/some/other/path:/some/linux/thing' }
       let(:chefdk)          { '/opt/chefdk/bin' }
       let(:chefdk_embedded) { '/opt/chefdk/embedded/bin' }
 
       it 'returns a linux like path with chefdk' do
-        expect(DeliveryBuild::PathHelper.system_path_with_chefdk(env)).to eq("#{chefdk}:#{chefdk_embedded}:#{env}")
+        expect(DeliveryBuild::PathHelper.system_path_with_chefdk).to eq("#{chefdk}:#{chefdk_embedded}")
       end
     end
   end

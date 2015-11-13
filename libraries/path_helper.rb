@@ -28,8 +28,8 @@ class DeliveryBuild
       omnibus_path(product, ::File.join('embedded', path))
     end
 
-    def self.system_path_with_chefdk(env)
-      [omnibus_path('chefdk', 'bin'), omnibus_embedded_path('chefdk', 'bin'), env].compact.join(::File::PATH_SEPARATOR)
+    def self.system_path_with_chefdk
+      [omnibus_path('chefdk', 'bin'), omnibus_embedded_path('chefdk', 'bin')].compact.join(::File::PATH_SEPARATOR)
     end
   end
 end
