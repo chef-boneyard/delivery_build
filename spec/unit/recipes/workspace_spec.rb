@@ -131,6 +131,9 @@ describe 'delivery_build::workspace' do
         expect(chef_run).to_not render_file(filename).with_content(
           /Raven/
         )
+        expect(chef_run).to render_file(filename).with_content(
+          /\/opt\/chefdk\/bin:\/opt\/chefdk\/embedded\/bin:/
+        )
       end
 
       it 'creates the builder ssh key' do
