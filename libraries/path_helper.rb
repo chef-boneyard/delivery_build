@@ -16,12 +16,20 @@
 
 class DeliveryBuild
   class PathHelper
-    def self.omnibus_embedded_path(product, path)
+    def self.omnibus_path(product, path)
       if ChefConfig.windows?
-        ::File.join('C:', 'opscode', product, 'embedded', path)
+        ::File.join('C:', 'opscode', product, path)
       else
-        ::File.join('/opt', product, 'embedded', path)
+        ::File.join('/opt', product, path)
       end
+    end
+
+    def self.omnibus_embedded_path(product, path)
+      omnibus_path(product, ::File.join('embedded', path))
+    end
+
+    def self.system_path_with_chefdk(env)
+      [omnibus_path('chefdk', 'bin'), omnibus_embedded_path('chefdk', 'bin'), env].compact.join(::File::PATH_SEPARATOR)
     end
   end
 end

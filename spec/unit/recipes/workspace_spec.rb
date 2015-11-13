@@ -62,6 +62,16 @@ describe 'delivery_build::workspace' do
         filename = "#{workspace}/bin/delivery-cmd.cmd"
         expect(windows_chef_run).to render_file(filename)
       end
+
+      it 'creates the delivery-cmd' do
+        filename = '/var/opt/delivery/workspace/bin/delivery-cmd'
+        expect(chef_run).to render_file(filename).with_content(
+          /class Streamy/
+        )
+        expect(chef_run).to_not render_file(filename).with_content(
+          /Raven/
+        )
+      end
     end
 
     describe 'ubuntu' do
@@ -130,9 +140,6 @@ describe 'delivery_build::workspace' do
         )
         expect(chef_run).to_not render_file(filename).with_content(
           /Raven/
-        )
-        expect(chef_run).to render_file(filename).with_content(
-          /\/opt\/chefdk\/bin:\/opt\/chefdk\/embedded\/bin:/
         )
       end
 
