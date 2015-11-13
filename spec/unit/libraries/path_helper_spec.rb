@@ -6,7 +6,7 @@ describe DeliveryBuild::PathHelper do
       before do
         ENV['SYSTEMDRIVE'] = 'C:'
         stub_const('File::PATH_SEPARATOR', ';')
-        allow(ChefConfig).to receive(:windows?).and_return(true)
+        allow(Chef::Platform).to receive(:windows?).and_return(true)
       end
 
       let(:env)             { 'C:/windows/paths;C:/other/windows/path' }
@@ -14,8 +14,6 @@ describe DeliveryBuild::PathHelper do
       let(:chefdk_embedded) { 'C:/opscode/chefdk/embedded/bin' }
 
       it 'returns a windows like path with chefdk' do
-        allow(ChefConfig).to receive(:windows?).and_return(true)
-
         expect(DeliveryBuild::PathHelper.system_path_with_chefdk(env)).to eq("#{chefdk};#{chefdk_embedded};#{env}")
       end
     end
@@ -39,7 +37,7 @@ describe DeliveryBuild::PathHelper do
       before do
         ENV['SYSTEMDRIVE'] = 'C:'
         stub_const('File::PATH_SEPARATOR', ';')
-        allow(ChefConfig).to receive(:windows?).and_return(true)
+        allow(Chef::Platform).to receive(:windows?).and_return(true)
       end
 
       it 'returns Windows location' do

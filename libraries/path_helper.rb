@@ -17,7 +17,7 @@
 class DeliveryBuild
   class PathHelper
     def self.omnibus_path(product, path)
-      if ChefConfig.windows?
+      if Chef::Platform.windows?
         ::File.join('C:', 'opscode', product, path)
       else
         ::File.join('/opt', product, path)
