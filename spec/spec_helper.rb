@@ -61,4 +61,5 @@ def default_mocks
   stub_command('knife ssl check -c /var/opt/delivery/workspace/etc/delivery.rb https://192.168.33.1').and_return(false)
   stub_command('knife ssl check -c C:/delivery/ws/etc/delivery.rb').and_return(false)
   stub_command('knife ssl check -c C:/delivery/ws/etc/delivery.rb https://192.168.33.1').and_return(false)
+  stub_command("    $KeyPath = 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\pushy-client'\n    (Get-ItemProperty -Path $KeyPath).ImagePath.Contains('-c /etc/chef/push-jobs-client.rb')\n")
 end
