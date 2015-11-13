@@ -19,6 +19,7 @@ if node['delivery_build']['delivery-cli']['artifact']
 else
   chef_ingredient 'delivery-cli' do
     channel node['delivery_build']['repo_name'].sub(%r{^chef/}, '').to_sym
+    options node['delivery_build']['delivery-cli']['options']
     action :upgrade
   end
 end

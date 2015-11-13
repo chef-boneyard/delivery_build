@@ -61,6 +61,11 @@ default['delivery_build']['api'] = nil
 
 # If set, download the package from the given url.
 default['delivery_build']['delivery-cli']['version'] = nil
+
+# package options for installing delivery-cli
+# example: "--nogpgcheck" if package is unsigned
+default['delivery_build']['delivery-cli']['options'] = nil
+
 if platform_family == 'windows'
   # This sucks mightily, but is necessary until chef-ingedient works on Windows and delivery-cli is properly publishing.
   # Until both those things are true, these values will need to be updated every time a new build of Windows delivery-cli is uploaded.

@@ -17,7 +17,7 @@ platforms:
   - name: ubuntu-15.04
     run_list:
       - recipe[apt::default]
-  - name: centos-6.6
+  - name: centos-6.7
   - name: centos-7.1
   - name: windows-2008r2-standard
     attributes:
@@ -46,3 +46,11 @@ suites:
     # the below are dummy data, generated purely for test purposes
     encrypted_data_bag_secret_key_path: "test/integration/default/encrypted_data_bag_secret"
     data_bags_path: "test/integration/default/data_bags"
+
+  - name: cli
+    run_list:
+      - recipe[delivery_build::cli]
+    attributes:
+      delivery_build:
+        delivery-cli:
+          options: "--nogpgcheck"
