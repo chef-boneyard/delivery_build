@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe DeliveryBuild::PathHelper do
-  describe '.system_path_with_chefdk' do
+  describe '.omnibus_chefdk_paths' do
     context 'on windows' do
       before do
         ENV['SYSTEMDRIVE'] = 'C:'
@@ -13,7 +13,7 @@ describe DeliveryBuild::PathHelper do
       let(:chefdk_embedded) { 'C:/opscode/chefdk/embedded/bin' }
 
       it 'returns a windows like path with chefdk' do
-        expect(DeliveryBuild::PathHelper.system_path_with_chefdk).to eq("#{chefdk};#{chefdk_embedded}")
+        expect(DeliveryBuild::PathHelper.omnibus_chefdk_paths).to eq("#{chefdk};#{chefdk_embedded}")
       end
     end
 
@@ -22,7 +22,7 @@ describe DeliveryBuild::PathHelper do
       let(:chefdk_embedded) { '/opt/chefdk/embedded/bin' }
 
       it 'returns a linux like path with chefdk' do
-        expect(DeliveryBuild::PathHelper.system_path_with_chefdk).to eq("#{chefdk}:#{chefdk_embedded}")
+        expect(DeliveryBuild::PathHelper.omnibus_chefdk_paths).to eq("#{chefdk}:#{chefdk_embedded}")
       end
     end
   end
