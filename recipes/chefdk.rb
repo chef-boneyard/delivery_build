@@ -46,9 +46,13 @@ end
 # think it has to do with the fact that this cookbook is its own build
 # cookbook, and the recursion and inception that results. We can come
 # back later and tweak that if we want.
+#
+# Added a `not_if` statement to avoid modifying the `.gemrc` if the user
+# already have one. Otherwise we will be overriding their configuration.
 
 file gemrc_path do
   mode '0644'
+  not_if { ::File.exist?(gemrc_path) }
   content <<-EOF
 ---
 :benchmark: false

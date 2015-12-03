@@ -85,6 +85,17 @@ describe 'delivery_build::chefdk' do
           mode: '0644'
         )
       end
+
+      context 'when .gemrc already exist' do
+        before do
+          allow(File).to receive(:exist?).and_call_original
+          allow(File).to receive(:exist?).with('/root/.gemrc').and_return(true)
+        end
+
+        it 'does not configures .gemrc' do
+          expect(chef_run).to_not create_file('/root/.gemrc')
+        end
+      end
     end
 
     describe 'windows' do
