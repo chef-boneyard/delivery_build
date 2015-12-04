@@ -102,3 +102,32 @@ delivery_cmd = File.join(node['delivery_build']['bin'], 'delivery-cmd')
 
 default['push_jobs']['whitelist'] = { 'chef-client'         => 'chef-client',
                                       /^delivery-cmd (.+)$/ => "#{delivery_cmd} '\\1'" }
+
+# Gemrc variables
+#
+# To customize the `~/.gemrc` file you have to modify the following variables,
+# keep in mind that it is very important what type of variable you use since the
+# file will be render the same way you configure it.
+#
+# Ex. If you add extra parameters like:
+#
+#   default['delivery_build']['gemrc'][:awesome_param] = 'this is a string'
+#   default['delivery_build']['gemrc']['not_a_symbol'] = ['multiple', 'parameters']
+#   default['delivery_build']['gemrc'][:number] = 1234
+#
+# It will get render like:
+#
+#   :awesome_param: this is a string
+#   not_a_symbol:
+#   - multiple
+#   - parameters
+#   :number: 1234
+#
+default['delivery_build']['gemrc'][:benchmark] = false
+default['delivery_build']['gemrc'][:verbose] = true
+default['delivery_build']['gemrc'][:update_sources] = true
+default['delivery_build']['gemrc']['gem'] = '--no-rdoc --no-ri'
+default['delivery_build']['gemrc']['install'] = '--no-user-install'
+default['delivery_build']['gemrc'][:sources] = %w(http://rubygems.org/ http://gems.github.com/)
+default['delivery_build']['gemrc'][:backtrace] = true
+default['delivery_build']['gemrc'][:bulk_threshold] = 1000

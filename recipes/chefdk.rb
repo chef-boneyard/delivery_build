@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-gemrc_path = '/root/.gemrc'
+gemrc_path  = '/root/.gemrc'
+# We must convert the ImmutableMash into a Hash
+gemrc_param = node['delivery_build']['gemrc'].to_hash
 
 if windows?
   gemrc_path = File.join(ENV['USERPROFILE'], '.gemrc')
@@ -46,22 +48,12 @@ end
 # think it has to do with the fact that this cookbook is its own build
 # cookbook, and the recursion and inception that results. We can come
 # back later and tweak that if we want.
+#
 
+# Customizable .gemrc file (Read the attributes file)
 file gemrc_path do
   mode '0644'
-  content <<-EOF
----
-:benchmark: false
-:verbose: true
-:update_sources: true
-gem: --no-rdoc --no-ri
-install: --no-user-install
-:sources:
-- http://rubygems.org/
-- http://gems.github.com/
-:backtrace: true
-:bulk_threshold: 1000
-EOF
+  content gemrc_param.to_yaml
   action :create
 end
 
