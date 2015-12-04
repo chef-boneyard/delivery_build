@@ -86,14 +86,23 @@ describe 'delivery_build::chefdk' do
         )
       end
 
-      context 'when .gemrc already exist' do
-        before do
-          allow(File).to receive(:exist?).and_call_original
-          allow(File).to receive(:exist?).with('/root/.gemrc').and_return(true)
+      context 'when we customize the .gemrc' do
+        let(:custom_runner) do
+          ChefSpec::SoloRunner.new do |node|
+            node.set['delivery_build']['gemrc']['awesome'] = 'parameter'
+            node.set['delivery_build']['gemrc'][:cool_beans] = true
+            node.set['delivery_build']['gemrc'][:a_nice_list] = %w(yoda luke padme)
+          end.converge(described_recipe)
         end
 
-        it 'does not configures .gemrc' do
-          expect(chef_run).to_not create_file('/root/.gemrc')
+        it 'configures an awesome .gemrc :smile:' do
+          expect(custom_runner).to render_file('/root/.gemrc')
+            .with_content('awesome: parameter')
+            .with_content('cool_beans: true')
+            .with_content('a_nice_list:')
+            .with_content('- yoda')
+            .with_content('- luke')
+            .with_content('- padme')
         end
       end
     end
