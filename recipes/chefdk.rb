@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-gemrc_path  = '/root/.gemrc'
-# We must convert the ImmutableMash into a Hash
-gemrc_param = node['delivery_build']['gemrc'].to_hash
+gemrc_path = '/root/.gemrc'
 
 if windows?
   gemrc_path = File.join(ENV['USERPROFILE'], '.gemrc')
@@ -49,11 +47,10 @@ end
 # cookbook, and the recursion and inception that results. We can come
 # back later and tweak that if we want.
 #
-
 # Customizable .gemrc file (Read the attributes file)
 file gemrc_path do
   mode '0644'
-  content gemrc_param.to_yaml
+  content DeliveryHelper::Gemrc.to_yaml(node['delivery_build']['gemrc'])
   action :create
 end
 

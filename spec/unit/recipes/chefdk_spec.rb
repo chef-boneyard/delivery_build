@@ -83,7 +83,7 @@ describe 'delivery_build::chefdk' do
       it 'configures .gemrc' do
         expect(chef_run).to create_file('/root/.gemrc').with(
           mode: '0644'
-        )
+        ).with_content(/:backtrace: true/).with_content(/:benchmark: false/)
       end
 
       context 'when we customize the .gemrc' do
@@ -97,9 +97,10 @@ describe 'delivery_build::chefdk' do
 
         it 'configures an awesome .gemrc :smile:' do
           expect(custom_runner).to render_file('/root/.gemrc')
+            .with_content(':backtrace: true')
             .with_content('awesome: parameter')
-            .with_content('cool_beans: true')
-            .with_content('a_nice_list:')
+            .with_content(':cool_beans: true')
+            .with_content(':a_nice_list:')
             .with_content('- yoda')
             .with_content('- luke')
             .with_content('- padme')
