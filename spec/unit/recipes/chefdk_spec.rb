@@ -105,6 +105,10 @@ describe 'delivery_build::chefdk' do
             .with_content('- luke')
             .with_content('- padme')
         end
+        it 'does not render gemrc with ImmutableArray weirdness' do
+          expect(custom_runner).not_to render_file('/root/.gemrc')
+            .with_content('!ruby/array:Chef::Node::ImmutableArray')
+        end
       end
     end
 
