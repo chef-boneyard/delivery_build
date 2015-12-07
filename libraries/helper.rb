@@ -52,6 +52,7 @@ class DeliveryHelper
 
       hash.each do |attr, value|
         attr = attr.to_sym if symbol?(attr)
+        value = value.to_a if value.is_a?(Chef::Node::ImmutableArray)
         parameters.merge!(attr => value)
       end
 
