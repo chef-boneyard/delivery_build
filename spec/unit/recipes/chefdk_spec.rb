@@ -97,13 +97,26 @@ describe 'delivery_build::chefdk' do
 
         it 'configures an awesome .gemrc :smile:' do
           expect(custom_runner).to render_file('/root/.gemrc')
-            .with_content(':backtrace: true')
-            .with_content('awesome: parameter')
-            .with_content(':cool_beans: true')
-            .with_content(':a_nice_list:')
-            .with_content('- yoda')
-            .with_content('- luke')
-            .with_content('- padme')
+            .with_content(<<-EOF
+---
+:benchmark: false
+:verbose: true
+:update_sources: true
+gem: "--no-rdoc --no-ri"
+install: "--no-user-install"
+:sources:
+- http://rubygems.org/
+- http://gems.github.com/
+:backtrace: true
+:bulk_threshold: 1000
+awesome: parameter
+cool_beans: true
+a_nice_list:
+- yoda
+- luke
+- padme
+EOF
+                         )
         end
       end
     end
