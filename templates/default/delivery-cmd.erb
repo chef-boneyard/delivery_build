@@ -98,8 +98,9 @@ Raven.capture do
 
 workspace_root = "<%= node['delivery_build']['root'] %>"
 workspace_bin = "<%= node['delivery_build']['bin'] %>"
+chef_client_config = "<% node['delivery_build']['chef_client_conf'] %>"
 
-Chef::Config.from_file(Chef::Config.platform_specific_path("/etc/chef/client.rb"))
+Chef::Config.from_file(Chef::Config.platform_specific_path(chef_client_config))
 client = Chef::Client.new
 client.run_ohai
 client.node_name
