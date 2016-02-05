@@ -51,12 +51,24 @@ describe 'delivery_build::trusted_certs' do
     end
 
     it 'appends the trusted_certs to chefdk/cacert.pem' do
-      expect(chef_run).to append_trusted_cert('Delivery Supermarket Server')
+      expect(chef_run).to append_trusted_cert('Delivery Supermarket Server-chefdk')
         .with_path('/my/path/to/supermarket.crt')
-      expect(chef_run).to append_trusted_cert('Delivery Github Enterprise')
+      expect(chef_run).to append_trusted_cert('Delivery Github Enterprise-chefdk')
         .with_path('/etc/chef/trusted_certs/github.crt')
-      expect(chef_run).to append_trusted_cert('Another Component')
+      expect(chef_run).to append_trusted_cert('Another Component-chefdk')
         .with_path('/the/component.crt')
+    end
+
+    it 'appends the trusted_certs to opscode-push-jobs-client/cacert.pem' do
+      expect(chef_run).to append_trusted_cert('Delivery Supermarket Server-push-jobs')
+        .with_path('/my/path/to/supermarket.crt')
+        .with_cacert_pem('/opt/opscode-push-jobs-client/embedded/ssl/certs/cacert.pem')
+      expect(chef_run).to append_trusted_cert('Delivery Github Enterprise-push-jobs')
+        .with_path('/etc/chef/trusted_certs/github.crt')
+        .with_cacert_pem('/opt/opscode-push-jobs-client/embedded/ssl/certs/cacert.pem')
+      expect(chef_run).to append_trusted_cert('Another Component-push-jobs')
+        .with_path('/the/component.crt')
+        .with_cacert_pem('/opt/opscode-push-jobs-client/embedded/ssl/certs/cacert.pem')
     end
   end
 end
