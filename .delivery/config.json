@@ -17,6 +17,7 @@
     "smoke"
   ],
   "build_nodes": {
-    "default"    : ["name:builder*.shd.chef.co"]
+    "default"    : ["name:builder*.shd.chef.co"],
+    "unit"       : ["name:builder12.shd.chef.co"]
   }
 }
