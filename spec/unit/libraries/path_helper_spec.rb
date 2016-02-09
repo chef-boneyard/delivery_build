@@ -49,4 +49,44 @@ describe DeliveryBuild::PathHelper do
       end
     end
   end
+
+  describe '.omnibus_push_jobs_cacert_pem' do
+    let(:path) { 'ssl/certs/cacert.pem' }
+    before { allow(::File).to receive(:exist?).and_call_original }
+
+    context 'on Windows' do
+      before do
+        ENV['SYSTEMDRIVE'] = 'C:'
+        stub_const('File::PATH_SEPARATOR', ';')
+        allow(Chef::Platform).to receive(:windows?).and_return(true)
+      end
+      %w(opscode-push-jobs-client push-jobs-client).each do |product|
+        context "when #{product} is installed" do
+          before do
+            allow(::File).to receive(:exist?)
+              .with("C:/opscode/#{product}/embedded/#{path}")
+              .and_return(true)
+          end
+          it 'returns cacert.pem location' do
+            expect(DeliveryBuild::PathHelper.omnibus_push_jobs_cacert_pem).to eql("C:/opscode/#{product}/embedded/#{path}")
+          end
+        end
+      end
+    end
+
+    context 'elsewhere' do
+      %w(opscode-push-jobs-client push-jobs-client).each do |product|
+        context "when #{product} is installed" do
+          before do
+            allow(::File).to receive(:exist?)
+              .with("/opt/#{product}/embedded/#{path}")
+              .and_return(true)
+          end
+          it 'returns cacert.pem location' do
+            expect(DeliveryBuild::PathHelper.omnibus_push_jobs_cacert_pem).to eql("/opt/#{product}/embedded/#{path}")
+          end
+        end
+      end
+    end
+  end
 end

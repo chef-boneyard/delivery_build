@@ -23,6 +23,6 @@ node['delivery_build']['trusted_certs'].each do |name, cert|
   # Append trusted_cert to Push Jobs Client cacert.pem
   trusted_cert "#{name}-push-jobs" do
     path cert
-    cacert_pem DeliveryBuild::PathHelper.omnibus_embedded_path('opscode-push-jobs-client', 'ssl/certs/cacert.pem')
+    cacert_pem lazy { DeliveryBuild::PathHelper.omnibus_push_jobs_cacert_pem }
   end
 end
