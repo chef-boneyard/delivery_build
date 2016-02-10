@@ -31,5 +31,17 @@ class DeliveryBuild
     def self.omnibus_chefdk_paths
       [omnibus_path('chefdk', 'bin'), omnibus_embedded_path('chefdk', 'bin')].compact.join(::File::PATH_SEPARATOR)
     end
+
+    def self.omnibus_push_jobs_cacert_pem
+      # Starting on version 1.3.0 `opscode-push-jobs-client` changed its name
+      # to be called `push-jobs-client`. We will need to check both paths to
+      # find where the `cacert.pem` file is stored.
+      %w(opscode-push-jobs-client push-jobs-client).each do |product|
+        @cacert_pem = omnibus_embedded_path(product, 'ssl/certs/cacert.pem')
+        return @cacert_pem if ::File.exist?(@cacert_pem)
+      end
+
+      fail "Could't find push-jobs cacert.pem file."
+    end
   end
 end

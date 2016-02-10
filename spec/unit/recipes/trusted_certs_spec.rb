@@ -46,6 +46,11 @@ describe 'delivery_build::trusted_certs' do
       runner.converge(described_recipe)
     end
 
+    before do
+      allow(DeliveryBuild::PathHelper).to receive(:omnibus_push_jobs_cacert_pem)
+        .and_return('/opt/push-jobs-client/embedded/ssl/certs/cacert.pem')
+    end
+
     it 'converges successfully' do
       chef_run
     end
@@ -59,16 +64,16 @@ describe 'delivery_build::trusted_certs' do
         .with_path('/the/component.crt')
     end
 
-    it 'appends the trusted_certs to opscode-push-jobs-client/cacert.pem' do
+    it 'appends the trusted_certs to push-jobs-client/cacert.pem' do
       expect(chef_run).to append_trusted_cert('Delivery Supermarket Server-push-jobs')
         .with_path('/my/path/to/supermarket.crt')
-        .with_cacert_pem('/opt/opscode-push-jobs-client/embedded/ssl/certs/cacert.pem')
+        .with_cacert_pem('/opt/push-jobs-client/embedded/ssl/certs/cacert.pem')
       expect(chef_run).to append_trusted_cert('Delivery Github Enterprise-push-jobs')
         .with_path('/etc/chef/trusted_certs/github.crt')
-        .with_cacert_pem('/opt/opscode-push-jobs-client/embedded/ssl/certs/cacert.pem')
+        .with_cacert_pem('/opt/push-jobs-client/embedded/ssl/certs/cacert.pem')
       expect(chef_run).to append_trusted_cert('Another Component-push-jobs')
         .with_path('/the/component.crt')
-        .with_cacert_pem('/opt/opscode-push-jobs-client/embedded/ssl/certs/cacert.pem')
+        .with_cacert_pem('/opt/push-jobs-client/embedded/ssl/certs/cacert.pem')
     end
   end
 end

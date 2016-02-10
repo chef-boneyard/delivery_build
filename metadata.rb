@@ -3,7 +3,7 @@ maintainer 'Chef Software, Inc.'
 maintainer_email 'cookbooks@chef.io'
 license 'apache2'
 description 'Sets up a delivery build node'
-version '0.4.14'
+version '0.4.15'
 
 depends 'git'
 depends 'build-essential'
