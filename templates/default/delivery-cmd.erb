@@ -164,6 +164,17 @@ elapsed_time = ((end_datetime - start_datetime) * 24 * 60 * 60).to_i
 streamy << "\nJob ended at #{end_datetime.iso8601} (ran in #{elapsed_time} seconds)"
 
 if cmd.error?
+  # Chef Stacktrace File Path
+  chef_stacktrace_file = File.join(
+                              workspace_root, server.host, job_data['enterprise'],
+                              job_data['organization'], job_data['project'], job_data['pipeline'],
+                              job_data['stage'], job_data['phase'], "cache", "chef-stacktrace.out"
+                        )
+  if File.exist?(chef_stacktrace_file)
+    streamy << "\nChef Stacktrace\n"
+    streamy << File.read(chef_stacktrace_file)
+  end
+
   rest.post(path,
     {
       "run_success" => false,
