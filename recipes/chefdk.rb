@@ -59,3 +59,11 @@ ENV['PATH'] = if windows?
               else
                 "/opt/chefdk/bin:/opt/chefdk/embedded/bin:#{ENV['PATH']}"
               end
+
+# Install knife-supermarket Gem
+#
+# Needed by the delivery-cli to resolve build-cookbooks from
+# both public/private Supermarket
+chef_gem 'knife-supermarket' do
+  version '0.2.2'
+end
