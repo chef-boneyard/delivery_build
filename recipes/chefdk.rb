@@ -30,6 +30,7 @@ else
   chef_ingredient 'chefdk' do
     channel node['delivery_build']['repo_name'].sub(%r{^chef/}, '').to_sym
     version node['delivery_build']['chefdk_version']
+    package_source node['delivery_build']['chefdk_package_source']
     action :upgrade if node['delivery_build']['chefdk_version'].eql?('latest')
   end
 end

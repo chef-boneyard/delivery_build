@@ -28,7 +28,7 @@ class DeliveryHelper
     Chef::Log.debug "Loading encrypted data bag item #{bag}/#{id}"
 
     if secret.nil? && Chef::Config[:encrypted_data_bag_secret].nil?
-      fail 'Please specify Chef::Config[:encrypted_data_bag_secret]'
+      raise 'Please specify Chef::Config[:encrypted_data_bag_secret]'
     end
 
     secret ||= File.read(Chef::Config[:encrypted_data_bag_secret]).strip

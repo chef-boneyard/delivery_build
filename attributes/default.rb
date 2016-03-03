@@ -89,6 +89,9 @@ default['delivery_build']['chefdk_version'] = if platform_family == 'windows'
                                                 'latest'
                                               end
 
+# set path to local package for chefdk install
+default['delivery_build']['chefdk_package_source'] = nil
+
 # Add trusted_certs to the build-node chefdk/cacerts.pem via trusted_certs.rb
 # Example:
 # {
