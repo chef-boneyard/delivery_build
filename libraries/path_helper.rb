@@ -41,7 +41,7 @@ class DeliveryBuild
         return @cacert_pem if ::File.exist?(@cacert_pem)
       end
 
-      fail "Could't find push-jobs cacert.pem file."
+      raise "Could't find push-jobs cacert.pem file."
     end
   end
 end
