@@ -53,7 +53,7 @@ file gemrc_path do
   mode '0644'
   content DeliveryHelper::Gemrc.to_yaml(node['delivery_build']['gemrc'])
   action :create
-end
+end.run_action(:create)
 
 ENV['PATH'] = if windows?
                 "C:/Opscode/chefdk/bin;C:/Opscode/chefdk/embedded/bin;#{ENV['PATH']}"
