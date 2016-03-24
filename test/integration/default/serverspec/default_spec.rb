@@ -19,8 +19,11 @@ describe 'delivery_build::default' do
   end
 
   # Git
-  describe package('git') do
-    it { should be_installed }
+  describe 'git' do
+    context command('git --version') do
+      its(:stdout) { should match(/git version 2.7.4/) }
+      its(:exit_status) { should eq 0 }
+    end
   end
 
   # delivery-cli
@@ -41,15 +44,14 @@ describe 'delivery_build::default' do
     end
   end
 
-  # User dbuild
-  describe user('dbuild') do
-    it { should exist }
-    it { should have_home_directory '/var/opt/delivery/workspace' }
-  end
-
   # Workspace
   describe 'Workspace Configuration' do
     if %w(debian ubuntu redhat centos).include?(os[:family])
+      context user('dbuild') do
+        it { should exist }
+        it { should have_home_directory '/var/opt/delivery/workspace' }
+      end
+
       context file('/var/opt/delivery/workspace') do
         it { should be_directory }
         it { should be_owned_by 'dbuild' }

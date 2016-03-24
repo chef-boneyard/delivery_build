@@ -25,7 +25,7 @@ include_recipe 'delivery-base'
 include_recipe 'delivery_build::chef_client'
 
 # Install git
-include_recipe 'git'
+include_recipe 'delivery_build::_git'
 
 if %w(rhel fedora debian).include? node['platform_family']
   # Setup the Package Cloud Repo
