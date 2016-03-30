@@ -24,5 +24,7 @@ node['delivery_build']['trusted_certs'].each do |name, cert|
   trusted_cert "#{name}-push-jobs" do
     path cert
     cacert_pem lazy { DeliveryBuild::PathHelper.omnibus_push_jobs_cacert_pem }
+    # Push Jobs Client for Windows does not curerntly ship with a cacert.pem
+    not_if { windows? }
   end
 end
