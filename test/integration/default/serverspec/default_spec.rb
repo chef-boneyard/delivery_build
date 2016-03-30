@@ -2,8 +2,8 @@ require 'spec_helper'
 
 context 'on Unix', if: !windows? do
   # Push-Jobs
-  describe service('opscode-push-jobs-client') do
-    it { should be_running }
+  describe package('push-jobs-client') do
+    it { should be_installed }
   end
 
   # ChefDK
