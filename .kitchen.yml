@@ -19,19 +19,19 @@ platforms:
       - recipe[apt::default]
   - name: centos-6.7
   - name: centos-7.1
-  - name: windows-2008r2-standard
+  - name: windows-server-2012r2-standard
     attributes:
       omnibus:
         ruby_version: 2.1.6-x64
       delivery_build:
-        chefdk_version: 0.7.0
+        chefdk_version: 0.12.0
         delivery-cli:
-          artifact: https://s3-us-west-2.amazonaws.com/give-me-delivery-now/delivery-cli-0.0.0%2B20150824144123-1.exe
-          checksum: bdfbd19c7885ae42120296839f314200c724dc1d548554c812673e921673bb3f
+          artifact: https://s3.amazonaws.com/delivery-packages/cli/delivery-cli-0.0.1%2B20160322081708-1-x64.msi
+          checksum: 9232f7f1e48fd048a4bb9b8dbe6ef8dc5b7919153b7b23c3e5485f613c9fbc41
     driver:
       customize:
         memory: 4096
-      box: chef/windows-server-2008r2-standard
+      box: chef/windows-server-2012r2-standard
 
 suites:
   - name: default

@@ -19,7 +19,7 @@ if windows?
   gemrc_path = File.join(ENV['USERPROFILE'], '.gemrc')
 
   pkg_name = "Chef Development Kit v#{node['delivery_build']['chefdk_version']}"
-  windows_package_url = "https://opscode-omnibus-packages.s3.amazonaws.com/windows/2008r2/i386/chefdk-#{node['delivery_build']['chefdk_version']}-1-x86.msi"
+  windows_package_url = "https://packages.chef.io/stable/windows/2008r2/chefdk-#{node['delivery_build']['chefdk_version']}-1-x86.msi"
 
   windows_package pkg_name do
     source windows_package_url

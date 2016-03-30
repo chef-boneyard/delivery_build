@@ -42,7 +42,7 @@ describe 'delivery_build::default' do
         chef_run
       end
 
-      ['git',
+      ['delivery_build::_git',
        'delivery-base',
        'delivery_build::chef_client',
        'delivery_build::repo',
@@ -61,7 +61,7 @@ describe 'delivery_build::default' do
         windows_chef_run
       end
 
-      ['git',
+      ['delivery_build::_git',
        'delivery-base',
        'delivery_build::chef_client',
        'delivery_build::chefdk',
