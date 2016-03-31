@@ -51,6 +51,11 @@ describe 'delivery_build::chefdk' do
         expect(chef_run).to install_chef_ingredient('chefdk').with_version('0.4.0')
       end
 
+      it 'installs knife-supermarket on windows' do
+        expect(windows_chef_run).to install_gem_package('knife-supermarket')
+          .with_gem_binary('C:\opscode\chefdk\embedded\bin\gem').with_version('0.2.2')
+      end
+
       it 'installs knife-supermarket with version 0.2.2' do
         expect(chef_run).to install_gem_package('knife-supermarket')
           .with_gem_binary('/opt/chefdk/embedded/bin/gem').with_version('0.2.2')

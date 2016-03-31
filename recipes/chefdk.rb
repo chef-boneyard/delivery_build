@@ -67,5 +67,5 @@ ENV['PATH'] = if windows?
 # both public/private Supermarket
 gem_package 'knife-supermarket' do
   version '0.2.2'
-  gem_binary '/opt/chefdk/embedded/bin/gem'
+  gem_binary windows? ? 'C:\opscode\chefdk\embedded\bin\gem' : '/opt/chefdk/embedded/bin/gem'
 end
