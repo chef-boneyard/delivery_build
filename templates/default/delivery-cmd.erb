@@ -163,6 +163,33 @@ end_datetime = DateTime.now
 elapsed_time = ((end_datetime - start_datetime) * 24 * 60 * 60).to_i
 streamy << "\nJob ended at #{end_datetime.iso8601} (ran in #{elapsed_time} seconds)"
 
+# Borrowed from chef-cookbooks/jenkins; used to create a cleanly normalized URL
+def uri_join(*parts)
+  parts = parts.compact.map(&URI.method(:escape))
+  URI.parse(parts.join('/')).normalize.to_s
+end
+
+# Borrowed from chef-cookbooks/omnibus; used to create a windows-safe file.join
+def windows_safe_path_join(*args)
+  ::File.join(args).gsub(::File::SEPARATOR, ::File::ALT_SEPARATOR || File::SEPARATOR)
+end
+
+compliance_json = windows_safe_path_join(
+                            workspace_root, server.host, job_data['enterprise'],
+                            job_data['organization'], job_data['project'], job_data['pipeline'],
+                            job_data['stage'], job_data['phase'], "repo", "compliance.json"
+                  )
+
+path_compliance = uri_join(job_data['enterprise'],
+                 'orgs', job_data['organization'],
+                 'projects', job_data['project'],
+                 'pipelines', job_data['pipeline'],
+                 'phase_runs', job_data['phase_run_id'].to_s, 'log_objects')
+
+if File.exist?(compliance_json)
+ rest.post(path_compliance,File.read(compliance_json),builder_auth_headers)
+end
+
 if cmd.error?
   # Chef Stacktrace File Path
   chef_stacktrace_file = File.join(
