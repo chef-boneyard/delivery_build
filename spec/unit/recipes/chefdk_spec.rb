@@ -52,7 +52,8 @@ describe 'delivery_build::chefdk' do
       end
 
       it 'installs knife-supermarket with version 0.2.2' do
-        expect(chef_run).to install_chef_gem('knife-supermarket').with_version('0.2.2')
+        expect(chef_run).to install_gem_package('knife-supermarket')
+          .with_gem_binary('/opt/chefdk/embedded/bin/gem').with_version('0.2.2')
       end
 
       it 'installs chefdk from the stable channel by default' do

@@ -65,6 +65,7 @@ ENV['PATH'] = if windows?
 #
 # Needed by the delivery-cli to resolve build-cookbooks from
 # both public/private Supermarket
-chef_gem 'knife-supermarket' do
+gem_package 'knife-supermarket' do
   version '0.2.2'
+  gem_binary '/opt/chefdk/embedded/bin/gem'
 end
