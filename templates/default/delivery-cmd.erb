@@ -177,7 +177,7 @@ end
 compliance_json = windows_safe_path_join(
                             workspace_root, server.host, job_data['enterprise'],
                             job_data['organization'], job_data['project'], job_data['pipeline'],
-                            job_data['stage'], job_data['phase'], "repo", "compliance.json"
+                            job_data['stage'], job_data['phase'], "repo", ".delivery-compliance.json"
                   )
 
 path_compliance = uri_join(job_data['enterprise'],
@@ -188,6 +188,7 @@ path_compliance = uri_join(job_data['enterprise'],
 
 if File.exist?(compliance_json)
  rest.post(path_compliance,File.read(compliance_json),builder_auth_headers)
+ streamy << "\nCompliance data has posted.\n"
 end
 
 if cmd.error?
