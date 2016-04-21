@@ -14,11 +14,11 @@
 # limitations under the License.
 #
 
-if windows?
-  gemrc_path = File.join(ENV['USERPROFILE'], '.gemrc')
-else
-  gemrc_path = '/root/.gemrc'
-end
+gemrc_path = if windows?
+               File.join(ENV['USERPROFILE'], '.gemrc')
+             else
+               '/root/.gemrc'
+             end
 
 chef_ingredient 'chefdk' do
   if node['delivery_build']['chefdk_package_source']
