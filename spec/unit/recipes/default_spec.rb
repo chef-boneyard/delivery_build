@@ -45,7 +45,6 @@ describe 'delivery_build::default' do
       ['delivery_build::_git',
        'delivery-base',
        'delivery_build::chef_client',
-       'delivery_build::repo',
        'delivery_build::chefdk',
        'delivery_build::user',
        'delivery_build::workspace',

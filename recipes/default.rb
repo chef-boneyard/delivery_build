@@ -28,9 +28,6 @@ include_recipe 'delivery_build::chef_client'
 include_recipe 'delivery_build::_git'
 
 if %w(rhel fedora debian).include? node['platform_family']
-  # Setup the Package Cloud Repo
-  include_recipe 'delivery_build::repo'
-
   # Create the dbuild user
   include_recipe 'delivery_build::user'
 end

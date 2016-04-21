@@ -16,7 +16,6 @@ See `attributes/default.rb`.
 * `chefdk`: Installs ChefDK and creates a `.gemrc` for root.
 * `cli`: Installs the delivery-cli from package repository or from specified artifact (see `attributes/default.rb`).
 * `default`: Includes all the recipes, plus git, to make a build node.
-* `repo`: Sets up the package repository (for ChefDK)
 * `user`: Manages the delivery build user.
 * `workspace`: Manages the delivery workspace.
 
