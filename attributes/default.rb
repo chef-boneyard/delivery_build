@@ -16,8 +16,8 @@
 
 include_attribute 'delivery-base'
 
-# The repo that we should pull chefdk and delivery-cli
-default['delivery_build']['repo_name'] = 'chef/stable'
+# The release channel that we should pull chefdk and delivery-cli from
+default['delivery_build']['release-channel'] = 'stable'
 
 # Directories we need for the builder workspace
 default['delivery_build']['root'] = platform_family == 'windows' ? 'C:/delivery/ws' : '/var/opt/delivery/workspace'

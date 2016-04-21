@@ -29,7 +29,7 @@ chef_ingredient 'delivery-cli' do
   if delivery_cli_path
     package_source delivery_cli_path
   else
-    channel node['delivery_build']['release-channel'].to_sym
+    channel DeliveryHelper.release_channel(node)
     version node['delivery_build']['delivery-cli']['version']
     options node['delivery_build']['delivery-cli']['options']
   end

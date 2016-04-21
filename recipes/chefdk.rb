@@ -24,7 +24,7 @@ chef_ingredient 'chefdk' do
   if node['delivery_build']['chefdk_package_source']
     package_source node['delivery_build']['chefdk_package_source']
   else
-    channel node['delivery_build']['repo_name'].sub(%r{^chef/}, '').to_sym
+    channel DeliveryHelper.release_channel(node)
     version node['delivery_build']['chefdk_version']
   end
 end
