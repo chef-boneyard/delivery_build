@@ -13,25 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-gemrc_path = '/root/.gemrc'
 
 if windows?
   gemrc_path = File.join(ENV['USERPROFILE'], '.gemrc')
-
-  pkg_name = "Chef Development Kit v#{node['delivery_build']['chefdk_version']}"
-  windows_package_url = "https://packages.chef.io/stable/windows/2008r2/chefdk-#{node['delivery_build']['chefdk_version']}-1-x86.msi"
-
-  windows_package pkg_name do
-    source windows_package_url
-    installer_type :msi
-    timeout 1800 # 30 minute timeout (this can be really slow)
-  end
 else
-  chef_ingredient 'chefdk' do
+  gemrc_path = '/root/.gemrc'
+end
+
+chef_ingredient 'chefdk' do
+  if node['delivery_build']['chefdk_package_source']
+    package_source node['delivery_build']['chefdk_package_source']
+  else
     channel node['delivery_build']['repo_name'].sub(%r{^chef/}, '').to_sym
     version node['delivery_build']['chefdk_version']
-    package_source node['delivery_build']['chefdk_package_source']
-    action :upgrade if node['delivery_build']['chefdk_version'].eql?('latest')
   end
 end
 

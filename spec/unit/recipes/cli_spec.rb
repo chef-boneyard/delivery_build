@@ -37,20 +37,20 @@ describe 'delivery_build::cli' do
     end
 
     it 'installs delivery-cli from the stable channel by default' do
-      expect(chef_run).to upgrade_chef_ingredient('delivery-cli').with_channel(:stable)
+      expect(chef_run).to install_chef_ingredient('delivery-cli').with_channel(:stable)
     end
 
     %w(chef/stable stable).each do |value|
       it "installs delivery-cli from the stable channel when repo_name is set to '#{value}'" do
         default_runner.node.set['delivery_build']['repo_name'] = value
-        expect(chef_run).to upgrade_chef_ingredient('delivery-cli').with_channel(:stable)
+        expect(chef_run).to install_chef_ingredient('delivery-cli').with_channel(:stable)
       end
     end
 
     %w(chef/current current).each do |value|
       it "installs delivery-cli from the current channel when repo_name is set to '#{value}'" do
         default_runner.node.set['delivery_build']['repo_name'] = value
-        expect(chef_run).to upgrade_chef_ingredient('delivery-cli').with_channel(:current)
+        expect(chef_run).to install_chef_ingredient('delivery-cli').with_channel(:current)
       end
     end
   end
