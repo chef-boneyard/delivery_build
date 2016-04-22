@@ -16,8 +16,8 @@
 
 include_attribute 'delivery-base'
 
-# The repo that we should pull chefdk and delivery-cli
-default['delivery_build']['repo_name'] = 'chef/stable'
+# The release channel that we should pull chefdk and delivery-cli from
+default['delivery_build']['release-channel'] = 'stable'
 
 # Directories we need for the builder workspace
 default['delivery_build']['root'] = platform_family == 'windows' ? 'C:/delivery/ws' : '/var/opt/delivery/workspace'
@@ -60,7 +60,7 @@ default['delivery_build']['sentry_dsn'] = nil
 default['delivery_build']['api'] = nil
 
 # If set, download the package from the given url.
-default['delivery_build']['delivery-cli']['version'] = nil
+default['delivery_build']['delivery-cli']['version'] = 'latest'
 
 # package options for installing delivery-cli
 # example: "--nogpgcheck" if package is unsigned
@@ -80,14 +80,7 @@ end
 #
 # Specify the chefdk version you want to install on the build-nodes
 # set it to `latest` to always be in the latest version (:upgrade)
-default['delivery_build']['chefdk_version'] = if platform_family == 'windows'
-                                                # Currently there is no "easy" way to get the latest version
-                                                # of chefdk for windows systems, therefore we will hardcode it
-                                                # until we have a final solution for this.
-                                                '0.9.0'
-                                              else
-                                                'latest'
-                                              end
+default['delivery_build']['chefdk_version'] = 'latest'
 
 # set path to local package for chefdk install
 default['delivery_build']['chefdk_package_source'] = nil

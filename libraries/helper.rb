@@ -19,6 +19,15 @@
 # to mock a Class method. So we can't test this cookbook if we do that.
 # Good times.
 class DeliveryHelper
+  def self.release_channel(node)
+    if node['delivery_build']['repo_name']
+      Chef::Log.warn("node['delivery_build']['repo_name'] has been deprecated please use node['delivery_build']['release-channel'] now.")
+      node.set['delivery_build']['release-channel'] = node['delivery_build']['repo_name'].sub(%r{^chef/}, '')
+    end
+
+    node['delivery_build']['release-channel'].to_sym
+  end
+
   def self.encrypted_data_bag_item(bag, id, secret = nil)
     dh = DeliveryHelper.new
     dh.encrypted_data_bag_item(bag, id, secret)
