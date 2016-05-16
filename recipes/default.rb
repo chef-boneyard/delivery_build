@@ -24,6 +24,11 @@ include_recipe 'delivery-base'
 # Make sure client.rb is readable by dbuild
 include_recipe 'delivery_build::chef_client'
 
+# if on debian_family make sure that the apt repos are up to date
+if 'debian' == node['platform_family']
+  include_recipe 'apt'
+end
+
 # Install git
 include_recipe 'delivery_build::_git'
 
