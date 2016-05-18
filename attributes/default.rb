@@ -66,15 +66,9 @@ default['delivery_build']['delivery-cli']['version'] = 'latest'
 # example: "--nogpgcheck" if package is unsigned
 default['delivery_build']['delivery-cli']['options'] = nil
 
-if platform_family == 'windows'
-  # This sucks mightily, but is necessary until chef-ingedient works on Windows and delivery-cli is properly publishing.
-  # Until both those things are true, these values will need to be updated every time a new build of Windows delivery-cli is uploaded.
-  default['delivery_build']['delivery-cli']['artifact'] = 'https://s3.amazonaws.com/delivery-packages/cli/delivery-cli-0.0.0%2B20151029184247-1-x64.msi'
-  default['delivery_build']['delivery-cli']['checksum'] = '4ff91024745801bc2a0f294a8581a175ebb6c6c7dabddba465ed3d3da52163eb'
-else
-  default['delivery_build']['delivery-cli']['artifact'] = nil
-  default['delivery_build']['delivery-cli']['checksum'] = nil
-end
+# Custom Artifact for the delivery-cli
+default['delivery_build']['delivery-cli']['artifact'] = nil
+default['delivery_build']['delivery-cli']['checksum'] = nil
 
 # ChefDK version
 #
