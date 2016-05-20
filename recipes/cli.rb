@@ -32,5 +32,6 @@ chef_ingredient 'delivery-cli' do
     channel DeliveryHelper.release_channel(node)
     version node['delivery_build']['delivery-cli']['version']
     options node['delivery_build']['delivery-cli']['options']
+    platform_version_compatibility_mode true
   end
 end

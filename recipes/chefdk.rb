@@ -26,6 +26,7 @@ chef_ingredient 'chefdk' do
   else
     channel DeliveryHelper.release_channel(node)
     version node['delivery_build']['chefdk_version']
+    platform_version_compatibility_mode true
   end
 end
 
