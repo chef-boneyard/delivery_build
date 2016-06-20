@@ -21,6 +21,7 @@ gemrc_path = if windows?
              end
 
 chef_ingredient 'chefdk' do
+  action :upgrade
   if node['delivery_build']['chefdk_package_source']
     package_source node['delivery_build']['chefdk_package_source']
   else
