@@ -47,8 +47,8 @@ describe 'delivery_build::chefdk' do
         chef_run
       end
 
-      it 'installs chefdk v0.4.0' do
-        expect(chef_run).to install_chef_ingredient('chefdk').with_version('0.4.0')
+      it 'upgrades chefdk v0.4.0' do
+        expect(chef_run).to upgrade_chef_ingredient('chefdk').with_version('0.4.0')
       end
 
       it 'installs knife-supermarket on windows' do
@@ -61,21 +61,21 @@ describe 'delivery_build::chefdk' do
           .with_gem_binary('/opt/chefdk/embedded/bin/gem').with_version('0.2.2')
       end
 
-      it 'installs chefdk from the stable channel by default' do
-        expect(chef_run).to install_chef_ingredient('chefdk').with_channel(:stable)
+      it 'upgrades chefdk from the stable channel by default' do
+        expect(chef_run).to upgrade_chef_ingredient('chefdk').with_channel(:stable)
       end
 
       %w(chef/stable stable).each do |value|
-        it "installs chefdk from the stable channel when repo_name is set to '#{value}'" do
+        it "upgrades chefdk from the stable channel when repo_name is set to '#{value}'" do
           default_runner.node.set['delivery_build']['repo_name'] = value
-          expect(chef_run).to install_chef_ingredient('chefdk').with_channel(:stable)
+          expect(chef_run).to upgrade_chef_ingredient('chefdk').with_channel(:stable)
         end
       end
 
       %w(chef/current current).each do |value|
-        it "installs chefdk from the current channel when repo_name is set to '#{value}'" do
+        it "upgrades chefdk from the current channel when repo_name is set to '#{value}'" do
           default_runner.node.set['delivery_build']['repo_name'] = value
-          expect(chef_run).to install_chef_ingredient('chefdk').with_channel(:current)
+          expect(chef_run).to upgrade_chef_ingredient('chefdk').with_channel(:current)
         end
       end
 
@@ -86,7 +86,7 @@ describe 'delivery_build::chefdk' do
         end
 
         it 'upgrades chefdk' do
-          expect(chef_run).to install_chef_ingredient('chefdk')
+          expect(chef_run).to upgrade_chef_ingredient('chefdk')
         end
       end
 
@@ -132,8 +132,8 @@ EOF
     end
 
     describe 'windows' do
-      it 'installs chefdk' do
-        expect(windows_chef_run).to install_chef_ingredient('chefdk')
+      it 'upgrades chefdk' do
+        expect(windows_chef_run).to upgrade_chef_ingredient('chefdk')
       end
 
       it 'configures .gemrc' do
