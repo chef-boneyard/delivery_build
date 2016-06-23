@@ -59,17 +59,6 @@ default['delivery_build']['sentry_dsn'] = nil
 # The location of the Delivery API
 default['delivery_build']['api'] = nil
 
-# If set, download the package from the given url.
-default['delivery_build']['delivery-cli']['version'] = 'latest'
-
-# package options for installing delivery-cli
-# example: "--nogpgcheck" if package is unsigned
-default['delivery_build']['delivery-cli']['options'] = nil
-
-# Custom Artifact for the delivery-cli
-default['delivery_build']['delivery-cli']['artifact'] = nil
-default['delivery_build']['delivery-cli']['checksum'] = nil
-
 # ChefDK version
 #
 # Specify the chefdk version you want to install on the build-nodes

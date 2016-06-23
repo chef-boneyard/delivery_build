@@ -32,7 +32,6 @@ describe 'delivery_build::default' do
     cached(:windows_chef_run) do
       ENV['USERPROFILE'] = 'C:/Users/Administrator'
       runner = ChefSpec::SoloRunner.new(platform: 'windows', version: '2012R2') do |node|
-        node.set['delivery_build']['delivery-cli']['artifact'] = 'https://my/delivery-cli.exe'
       end
       runner.converge('delivery_build::default')
     end
@@ -47,8 +46,7 @@ describe 'delivery_build::default' do
        'delivery_build::chef_client',
        'delivery_build::chefdk',
        'delivery_build::user',
-       'delivery_build::workspace',
-       'delivery_build::cli'].each do |r|
+       'delivery_build::workspace'].each do |r|
          it "includes #{r}" do
            expect(chef_run).to include_recipe(r)
          end
@@ -64,8 +62,7 @@ describe 'delivery_build::default' do
        'delivery-base',
        'delivery_build::chef_client',
        'delivery_build::chefdk',
-       'delivery_build::workspace',
-       'delivery_build::cli'].each do |r|
+       'delivery_build::workspace'].each do |r|
          it "includes #{r}" do
            expect(windows_chef_run).to include_recipe(r)
          end
