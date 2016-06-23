@@ -38,8 +38,5 @@ include_recipe 'delivery_build::chefdk'
 # Create the root delivery job workspace
 include_recipe 'delivery_build::workspace'
 
-# Install the Delivery CLI
-include_recipe 'delivery_build::cli'
-
 # Add trusted_certs to chefdk/cacert.pem
 include_recipe 'delivery_build::trusted_certs'
