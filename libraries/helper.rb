@@ -1,5 +1,5 @@
 #
-# Copyright 2015 Chef Software, Inc.
+# Copyright:: 2015 Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ class DeliveryHelper
     end
 
     secret ||= File.read(Chef::Config[:encrypted_data_bag_secret]).strip
-    Chef::EncryptedDataBagItem.load(bag, id, secret)
+    data_bag_item(bag, id, secret)
   end
 
   class Gemrc

@@ -1,5 +1,5 @@
 #
-# Copyright 2015 Chef Software, Inc.
+# Copyright:: 2015 Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,13 +44,13 @@ default['delivery_build']['builder_keys'] = {
     'bag' => 'keys',
     'item' => 'delivery_builder_keys',
     # a data bag is a hash; what key in the hash?
-    'key' => 'builder_key'
+    'key' => 'builder_key',
   },
   'delivery_pem' => {
     'bag' => 'keys',
     'item' => 'delivery_builder_keys',
-    'key' => 'delivery_pem'
-  }
+    'key' => 'delivery_pem',
+  },
 }
 
 # Sentry DSN for use with exception handling in delivery-cmd

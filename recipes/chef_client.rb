@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: delivery_build
+# Cookbook:: delivery_build
 # recipe:: chef_client
 #
-# Copyright 2015 Chef Software, Inc.
+# Copyright:: 2015 Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,23 +22,23 @@ root = if windows?
          '/etc/chef'
        end
 
-node.set['delivery_build']['chef_root'] = root
+node.normal['delivery_build']['chef_root'] = root
 
 directory root do
-  mode 0755
+  mode '755'
   recursive true
 end
 
 file "#{root}/client.rb" do
-  mode 0644
+  mode '644'
 end
 
 directory "#{root}/trusted_certs" do
-  mode 0755
+  mode '755'
 end
 
 Dir["#{root}/trusted_certs/*"].each do |cert|
   file cert do
-    mode 0644
+    mode '644'
   end
 end

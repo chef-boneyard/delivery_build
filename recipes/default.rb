@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: delivery_build
+# Cookbook:: delivery_build
 # Recipe:: default
 #
-# Copyright 2015 Chef Software, Inc.
+# Copyright:: 2015 Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ include_recipe 'delivery_build::chef_client'
 # Install git
 include_recipe 'delivery_build::_git'
 
-if %w(rhel fedora debian).include? node['platform_family']
+if platform_family?('rhel', 'fedora', 'debian')
   # Create the dbuild user
   include_recipe 'delivery_build::user'
 end

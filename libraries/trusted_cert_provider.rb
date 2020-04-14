@@ -20,10 +20,6 @@ require 'chef/provider'
 class Chef
   class Provider
     class TrustedCert < Chef::Provider
-      def whyrun_supported?
-        true
-      end
-
       def load_current_resource
         # not needed, but need to override
       end
