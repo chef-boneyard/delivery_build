@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: delivery_build
+# Cookbook:: delivery_build
 # Spec:: workspace
 #
-# Copyright 2015 Chef Software, Inc.
+# Copyright:: 2015 Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -119,7 +119,7 @@ describe 'delivery_build::workspace' do
         [
           Regexp.new('-o UserKnownHostsFile=/var/opt/delivery/workspace/etc/delivery-git-ssh-known-hosts'),
           Regexp.new('-o IdentityFile=/var/opt/delivery/workspace/etc/builder_key'),
-          Regexp.new('-l builder')
+          Regexp.new('-l builder'),
         ].each do |check|
           expect(chef_run).to render_file(filename).with_content(check)
         end
@@ -145,7 +145,7 @@ describe 'delivery_build::workspace' do
 
       it 'creates the builder ssh key' do
         ['/var/opt/delivery/workspace/etc/builder_key',
-         '/var/opt/delivery/workspace/.chef/builder_key'
+         '/var/opt/delivery/workspace/.chef/builder_key',
         ].each do |filename|
           expect(chef_run).to create_file(filename).with(
             owner: 'dbuild',
@@ -160,7 +160,7 @@ describe 'delivery_build::workspace' do
 
       it 'creates the delivery.pem for the chef server' do
         ['/var/opt/delivery/workspace/etc/delivery.pem',
-         '/var/opt/delivery/workspace/.chef/delivery.pem'
+         '/var/opt/delivery/workspace/.chef/delivery.pem',
         ].each do |filename|
           expect(chef_run).to create_file(filename).with(
             owner: 'dbuild',
@@ -182,7 +182,7 @@ describe 'delivery_build::workspace' do
         [
           Regexp.new('node_name\s+"delivery"'),
           Regexp.new('client_key\s+"#{current_dir}/delivery.pem"'),
-          Regexp.new('trusted_certs_dir\s+"/etc/chef/trusted_certs"')
+          Regexp.new('trusted_certs_dir\s+"/etc/chef/trusted_certs"'),
         ].each do |check|
           expect(chef_run).to render_file(filename).with_content(check)
         end

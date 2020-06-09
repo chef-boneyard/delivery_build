@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: delivery_build
+# Cookbook:: delivery_build
 # Spec:: chefdk
 #
-# Copyright 2015 Chef Software, Inc.
+# Copyright:: 2015 Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -67,21 +67,21 @@ describe 'delivery_build::chefdk' do
 
       %w(chef/stable stable).each do |value|
         it "upgrades chefdk from the stable channel when repo_name is set to '#{value}'" do
-          default_runner.node.set['delivery_build']['repo_name'] = value
+          default_runner.node.normal['delivery_build']['repo_name'] = value
           expect(chef_run).to upgrade_chef_ingredient('chefdk').with_channel(:stable)
         end
       end
 
       %w(chef/current current).each do |value|
         it "upgrades chefdk from the current channel when repo_name is set to '#{value}'" do
-          default_runner.node.set['delivery_build']['repo_name'] = value
+          default_runner.node.normal['delivery_build']['repo_name'] = value
           expect(chef_run).to upgrade_chef_ingredient('chefdk').with_channel(:current)
         end
       end
 
       context 'when chefdk_version is latest' do
         before do
-          chef_run.node.set['delivery_build']['chefdk_version'] = 'latest'
+          chef_run.node.normal['delivery_build']['chefdk_version'] = 'latest'
           chef_run.converge(described_recipe)
         end
 

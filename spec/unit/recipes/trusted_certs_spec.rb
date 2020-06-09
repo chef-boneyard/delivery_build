@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: delivery_build
+# Cookbook:: delivery_build
 # Spec:: chefdk
 #
-# Copyright 2015 Chef Software, Inc.
+# Copyright:: 2015 Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ describe 'delivery_build::trusted_certs' do
         node.set['delivery_build']['trusted_certs'] = {
           'Delivery Supermarket Server' => '/my/path/to/supermarket.crt',
           'Delivery Github Enterprise' => '/etc/chef/trusted_certs/github.crt',
-          'Another Component' => '/the/component.crt'
+          'Another Component' => '/the/component.crt',
         }
       end
       runner.converge(described_recipe)
