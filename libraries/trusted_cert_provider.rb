@@ -24,7 +24,7 @@ class Chef
         # not needed, but need to override
       end
 
-      def action_append
+      action :append do
         converge_by "Append #{new_resource.name} to " \
                     "#{new_resource.cacert_pem}" do
           unless trusted_cert_exists?
