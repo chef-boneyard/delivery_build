@@ -22,23 +22,23 @@ root = if windows?
          '/etc/chef'
        end
 
-node.set['delivery_build']['chef_root'] = root
+node.normal['delivery_build']['chef_root'] = root
 
 directory root do
-  mode 0755
+  mode '755'
   recursive true
 end
 
 file "#{root}/client.rb" do
-  mode 0644
+  mode '644'
 end
 
 directory "#{root}/trusted_certs" do
-  mode 0755
+  mode '755'
 end
 
 Dir["#{root}/trusted_certs/*"].each do |cert|
   file cert do
-    mode 0644
+    mode '644'
   end
 end

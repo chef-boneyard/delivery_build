@@ -6,7 +6,6 @@ description 'Sets up a delivery build node'
 version '0.4.28'
 
 depends 'git'
-depends 'build-essential'
 depends 'chef-sugar'
 depends 'delivery-base'
 depends 'chef-ingredient', '>= 0.18.0'
