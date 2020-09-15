@@ -20,15 +20,11 @@ require 'chef/provider'
 class Chef
   class Provider
     class TrustedCert < Chef::Provider
-      def whyrun_supported?
-        true
-      end
-
       def load_current_resource
         # not needed, but need to override
       end
 
-      def action_append
+      action :append do
         converge_by "Append #{new_resource.name} to " \
                     "#{new_resource.cacert_pem}" do
           unless trusted_cert_exists?
