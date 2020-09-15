@@ -82,6 +82,8 @@ delivery_cmd = File.join(node['delivery_build']['bin'], 'delivery-cmd')
 default['push_jobs']['whitelist'] = { 'chef-client'         => 'chef-client',
                                       /^delivery-cmd (.+)$/ => "#{delivery_cmd} '\\1'" }
 
+# What chef config would you like delivery_build to use?
+default['delivery_build']['chef_client_conf'] = platform_family == 'windows' ? 'C:/chef/client.rb' : '/etc/chef/client.rb'
 # Gemrc variables
 #
 # To customize the `~/.gemrc` file you have to modify the following variables,
