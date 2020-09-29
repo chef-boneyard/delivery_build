@@ -14,9 +14,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-if defined?(ChefSpec)
-  def append_trusted_cert(resource_name)
-    ChefSpec::Matchers::ResourceMatcher.new(:trusted_cert, :append, resource_name)
-  end
-end
