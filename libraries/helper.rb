@@ -65,7 +65,7 @@ class DeliveryHelper
         parameters.merge!(attr => value)
       end
 
-      parameters.to_yaml
+      YAML.dump(parameters)
     end
   end
 end
