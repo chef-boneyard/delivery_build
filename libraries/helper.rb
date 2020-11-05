@@ -41,7 +41,7 @@ class DeliveryHelper
     end
 
     secret ||= File.read(Chef::Config[:encrypted_data_bag_secret]).strip
-    Chef::EncryptedDataBagItem.load(bag, id, secret)
+    data_bag_item(bag, id, secret)
   end
 
   class Gemrc
@@ -65,7 +65,7 @@ class DeliveryHelper
         parameters.merge!(attr => value)
       end
 
-      parameters.to_yaml
+      YAML.dump(parameters)
     end
   end
 end
