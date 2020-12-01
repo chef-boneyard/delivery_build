@@ -47,7 +47,7 @@ end
 # Customizable .gemrc file (Read the attributes file)
 file gemrc_path do
   mode '0644'
-  content DeliveryHelper::Gemrc.to_yaml(node['delivery_build']['gemrc'])
+  content YAML.dump(DeliveryHelper::Gemrc)
   action :create
 end.run_action(:create)
 

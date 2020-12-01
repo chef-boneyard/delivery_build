@@ -22,16 +22,16 @@ class Chef
     class TrustedCert < Chef::Resource
       provides :trusted_cert
 
+      resource_name :trusted_cert
+
+      default_action :append
+
       def initialize(name, run_context = nil)
         super
-
-        @resource_name = :trusted_cert
         @provider = Chef::Provider::TrustedCert
 
         # This is the default location of the cacert.pem in chefdk
         @cacert_pem = DeliveryBuild::PathHelper.omnibus_embedded_path('chefdk', 'ssl/certs/cacert.pem')
-
-        @action = :append
         @allowed_actions.push(:append)
       end
 
